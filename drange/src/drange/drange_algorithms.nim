@@ -39,15 +39,12 @@ type
     # TODO: is that as efficient as in D? case of function vs delegate vs lambda
     fun:Fun
 
-  isMapObj* = concept a
-    a is MapObj[a.R, a.Fun]
-
 proc map*[R, Fun](r:R, fun:Fun):auto = MapObj[R,Fun](r:r, fun:fun)
 
 #TODO: can we do w proc? would need to pull in proc's defined where x is defined as done in D; not sure if possible in Nim
-template notEmpty*(a:isMapObj):bool = a.r.notEmpty
-template popFront*(a:var isMapObj) = a.r.popFront
-template front*(a:isMapObj):auto = a.fun(a.r.front)
+template notEmpty*(a:MapObj):bool = a.r.notEmpty
+template popFront*(a:var MapObj) = a.r.popFront
+template front*(a:MapObj):auto = a.fun(a.r.front)
 
 ## filter
 type 
@@ -89,18 +86,15 @@ type
     n:int
     count:int
 
-  isTakeObj* = concept a
-    a is TakeObj[a.R]
-
 proc take*[R](r:R, n:int):auto = TakeObj[R](r:r, n:n, count:0)
 
-template notEmpty*(a:isTakeObj):bool = a.count < a.n and a.r.notEmpty
+template notEmpty*(a:TakeObj):bool = a.count < a.n and a.r.notEmpty
 
-template popFront*(a:var isTakeObj) =
+template popFront*(a:var TakeObj) =
   a.r.popFront
   a.count.inc
 
-template front*(a:var isTakeObj):auto = a.r.front
+template front*(a:var TakeObj):auto = a.r.front
 
 ##
 template toIter*(a: isInputRange): auto =
