@@ -13,15 +13,6 @@ foreach
 
 benchmark runtime speed
 benchmark compilation time
-
-NOTE:
-on error 'too nested for type matching'
-requires:
-if prevMatchedConcept.depth > 10:
-in sigmatch.nim
-
-slow with deeper expression
-
 ]#
 
 type 
