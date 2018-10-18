@@ -1,12 +1,52 @@
-# This is just an example to get you started. You may wish to put all of your
-# tests into a single file, or separate them into multiple `test1`, `test2`
-# etc. files (better names are recommended, just make sure the name starts with
-# the letter 't').
-#
-# To run these tests, simply execute `nimble test`.
-
-import unittest
+import std/[
+  typetraits,
+  sugar,
+  unittest,
+]
 
 import drange
-test "can add":
-  check add(5, 5) == 10
+import sequtils
+
+## tests
+proc testFun()=
+  var a=Iota(n:10)
+
+  block:
+    var temp = toSeq(a.toIter()())
+    doAssert temp == @[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+  block:
+    var temp = toSeq(a.toIter()())
+    doAssert temp == @[]
+
+  a=Iota(n:10)
+  doAssert a.toArray == @[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+  proc myfilter(x:int):auto = x mod 2 == 0
+
+  var b2=Iota(n:100).
+    map((x:int)=>x*2).
+    # filter(myfilter).
+    take(5)
+
+  doAssert b2.toArray == @[0, 2, 4, 6, 8]
+
+test "test1":
+  testFun()
+
+proc testFail[]()=
+  var b2=Iota(n:100).
+    map((x:int)=>x*2).
+    map((x:int)=>x*2).
+    # map((x:int)=>x*2).
+    take(5)
+
+  echo b2.toArray
+
+test "test1":
+  testFun()
+
+when defined(case1):
+  # [blocker for implementing D ranges in Nim · Issue #9422 · nim-lang/Nim](https://github.com/nim-lang/Nim/issues/9422)
+  test "test_fail":
+    testFail()
