@@ -34,19 +34,39 @@ proc testFun()=
 test "test1":
   testFun()
 
-proc testFail[]()=
-  var b2=Iota(n:100).
-    map((x:int)=>x*2).
-    map((x:int)=>x*2).
-    # map((x:int)=>x*2).
-    take(5)
-
-  echo b2.toArray
-
 test "test1":
   testFun()
 
 when defined(case1):
   # [blocker for implementing D ranges in Nim · Issue #9422 · nim-lang/Nim](https://github.com/nim-lang/Nim/issues/9422)
   test "test_fail":
-    testFail()
+    var b2=Iota(n:100).
+      map((x:int)=>x*2).
+      map((x:int)=>x*2).
+      # map((x:int)=>x*2).
+      take(5)
+
+    echo b2.toArray
+
+when defined(case2):
+  # 10 seconds with WORKAROUND from https://github.com/nim-lang/Nim/issues/9422
+  test "test_fail2":
+    var b2=Iota(n:100).
+      map((x:int)=>x*2).
+      map((x:int)=>x*2).
+      map((x:int)=>x*2).
+      take(5)
+
+    echo b2.toArray
+
+when defined(case3):
+  # 107 seconds with WORKAROUND from https://github.com/nim-lang/Nim/issues/9422
+  test "test_fail3":
+    var b2=Iota(n:100).
+      map((x:int)=>x*2).
+      map((x:int)=>x*2).
+      map((x:int)=>x*2).
+      map((x:int)=>x*2).
+      take(5)
+
+    echo b2.toArray
