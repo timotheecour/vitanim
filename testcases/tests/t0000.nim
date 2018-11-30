@@ -35,10 +35,11 @@ instead, how about requiring an option (in dispatch) for making a seq become pos
 rnim -d:case9 -d:nopositional $nim_D/vitanim/testcases/tests/t0000.nim -h
 nim c -r -d:case9 -d:nopositional /Users/timothee/git_clone//nim//vitanim/testcases/tests/t0000.nim -h
 Usage:
-  main [optional-params] [foo]
+  main [required&optional-params] [foo3]
   Options(opt-arg sep :|=|spc):
-  -h, --help      write this help to stdout
-
+  -h, --help                     write this help to stdout
+  -f=, --foo1=  int    REQUIRED  set foo1
+  --foo2=       float  REQUIRED  set foo2
 
 ## 
 rnim -d:case5 $nim_D/vitanim/testcases/tests/t0000.nim -h
@@ -89,8 +90,8 @@ when defined(case8):
     echo (foo)
 
 when defined(case9):
-  proc main(foo: seq[string])=
-    echo foo
+  proc main(foo1: int, foo2: float, foo3: seq[string])=
+    echo (foo1, foo2, foo3)
 
 when defined(DPSV):
   let d = "<D>"
