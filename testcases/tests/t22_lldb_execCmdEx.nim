@@ -7,7 +7,8 @@ BUG:can't debug (with lldb) a nim binary that calls execCmdEx
 $timn_D/tests/D/t09.d
 
 ##
-rnim -d:case1 $timn_D/bugs/stdlib/t22_lldb_execCmdEx.nim
+rnim -d:case1 $nim_D/vitanim/testcases/tests/t22_lldb_execCmdEx.nim
+# note: works fine with -d:case2 (ie, execCmd)
 
 lldb /tmp/nim//app
 (lldb) target create "/tmp/nim//app"
