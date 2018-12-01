@@ -54,6 +54,47 @@ Usage:
   def     set foo2
   --foo3=       string       "abc\ndef"  set foo3
 
+## D20181130T174608:here
+the default value formatting for seq is not good:
+* newlines are not escaped (see D20181130T172327)
+  * @[""] prints as nothing_at_all (for DPSV, <D>)
+  * @[] prints as EMPTY (for DPSV, EMPTY, which is not super consistent)
+* it's neither DRY (DPSV or ,SV is repeated in every seq entry) nor standard notation
+
+
+rnim -d:case11 $nim_D/vitanim/testcases/tests/t0000.nim -h
+nim c -r -d:case11 /Users/timothee/git_clone//nim//vitanim/testcases/tests/t0000.nim -h
+Usage:
+  main [required&optional-params]
+  Options(opt-arg sep :|=|spc):
+  -h, --help                            write this help to stdout
+  -f=, --foo1=  int          REQUIRED   set foo1
+  --foo2=       float        REQUIRED   set foo2
+  --foo3=       ,SV[string]  baz1,baz2  set foo3
+  --foo4=       ,SV[string]  EMPTY      set foo4
+  --foo5=       ,SV[string]             set foo5
+  --foo6=       ,SV[int]     EMPTY      set foo6
+  --foo7=       ,SV[int]     10         set foo7
+  --foo8=       string       ""         set foo8
+
+rnim -d:DPSV -d:case11 $nim_D/vitanim/testcases/tests/t0000.nim -h
+nim c -r -d:DPSV -d:case11 /Users/timothee/git_clone//nim//vitanim/testcases/tests/t0000.nim -h
+Usage:
+  main [required&optional-params]
+  Options(opt-arg sep :|=|spc):
+  -h, --help                                  write this help to stdout
+  -f=, --foo1=  int           REQUIRED        set foo1
+  --foo2=       float         REQUIRED        set foo2
+  --foo3=       DPSV[string]  <D>baz1<D>baz2  set foo3
+  --foo4=       DPSV[string]  EMPTY           set foo4
+  --foo5=       DPSV[string]  <D>             set foo5
+  --foo6=       DPSV[int]     EMPTY           set foo6
+  --foo7=       DPSV[int]     <D>10           set foo7
+  --foo8=       string        ""              set foo8
+
+
+
+
 ## 
 rnim -d:case5 $nim_D/vitanim/testcases/tests/t0000.nim -h
 nim c -r -d:case5 /Users/timothee/git_clone//nim//vitanim/testcases/tests/t0000.nim -h
