@@ -41,6 +41,19 @@ Usage:
   -f=, --foo1=  int    REQUIRED  set foo1
   --foo2=       float  REQUIRED  set foo2
 
+## D20181130T172327:here
+default values should escape \n for `seq[string]` (already works for `string`)
+rnim -d:case13 $nim_D/vitanim/testcases/tests/t0000.nim -h
+nim c -r -d:case13 /Users/timothee/git_clone//nim//vitanim/testcases/tests/t0000.nim -h
+Usage:
+  main [required&optional-params]
+  Options(opt-arg sep :|=|spc):
+  -h, --help                             write this help to stdout
+  -f=, --foo1=  int          REQUIRED    set foo1
+  --foo2=       ,SV[string]  abc
+  def     set foo2
+  --foo3=       string       "abc\ndef"  set foo3
+
 ## 
 rnim -d:case5 $nim_D/vitanim/testcases/tests/t0000.nim -h
 nim c -r -d:case5 /Users/timothee/git_clone//nim//vitanim/testcases/tests/t0000.nim -h
@@ -92,6 +105,31 @@ when defined(case8):
 when defined(case9):
   proc main(foo1: int, foo2: float, foo3: seq[string])=
     echo (foo1, foo2, foo3)
+
+when defined(case10):
+  proc main(foo: seq[string] = @["baz"])=
+    echo (foo)
+
+when defined(case11):
+  proc main(foo1: int, foo2: float, foo3: seq[string] = @["baz1", "baz2"], foo4: seq[string] = @[], foo5: seq[string] = @[""], foo6: seq[int] = @[], foo7: seq[int] = @[10], foo8="")=
+    discard
+
+when defined(case12):
+  let myDefault2 = block:
+    var ret = ""
+    for i in 0..<100:
+      ret.add "arg" & $i & "\n"
+    ret
+  let myDefault3 = block:
+    var ret: seq[string]
+    for i in 0..<10:
+      ret.add "arg" & $i & "\n"
+    ret
+  proc main(foo1: int, foo2 = myDefault2, foo3 = myDefault3)=
+    discard
+
+when defined(case13):
+  proc main(foo1: int, foo2 = @["abc\ndef"], foo3 = "abc\ndef") = discard
 
 when defined(DPSV):
   let d = "<D>"
