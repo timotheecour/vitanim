@@ -1,5 +1,6 @@
 #[
 MOVED from $timn_D/bugs/stdlib/t22_lldb_execCmdEx.nim
+
 BUG:can't debug (with lldb) a nim binary that calls execCmdEx
 [debugging (eg w lldb) a nim program crashes at the 1st call to `execCmdEx` · Issue #9634 · nim-lang/Nim](https://github.com/nim-lang/Nim/issues/9634)
 
@@ -7,7 +8,7 @@ BUG:can't debug (with lldb) a nim binary that calls execCmdEx
 $timn_D/tests/D/t09.d
 
 ##
-rnim -d:case1 $nim_D/vitanim/testcases/tests/t22_lldb_execCmdEx.nim
+rnim -d:case1 $nim_D/vitanim/testcases/tests/t0001.nim
 # note: works fine with -d:case2 (ie, execCmd)
 
 lldb /tmp/nim//app

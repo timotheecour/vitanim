@@ -1,6 +1,10 @@
 #[
 KEY cligen ,SV
 
+## D20181130T094445:here `a: seq[string]` treamtment not consistent with `a: T` for other non-seq types T, in that it becomes positional arg
+instead, how about requiring an option (in dispatch) for making a seq become positional?
+
+
 ## D20181130T094211:here RESOLVED DPSV doesn't work:
 this doesn't work:
 nim c -r -d:DPSV -d:case1a /Users/timothee/git_clone//nim//vitanim/testcases/tests/t0000.nim --a :foo1:foo2
@@ -14,7 +18,7 @@ nim c -r -d:case1a /Users/timothee/git_clone//nim//vitanim/testcases/tests/t0000
 nim c -r -d:case1a /Users/timothee/git_clone//nim//vitanim/testcases/tests/t0000.nim --a+=foo1,foo2,foo3
 @["foo1", "foo1foo2", "foo1foo2foo3"]
 
-## D20181130T094043:here cligen doesn't distinguish bw `a: seq[int]` and `a: seq[string]` (etc)
+## D20181130T094043:here RESOLVED cligen doesn't distinguish bw `a: seq[int]` and `a: seq[string]` (etc)
 nim c -r -d:case2a /Users/timothee/git_clone//nim//vitanim/testcases/tests/t0000.nim -h
 Usage:
   main [optional-params] [a]
@@ -27,11 +31,7 @@ Usage:
   Options(opt-arg sep :|=|spc):
   -h, --help      write this help to stdout
 
-
-## D20181130T094445:here `a: seq[string]` treamtment not consistent with `a: T` for other non-seq types T, in that it becomes positional arg
-instead, how about requiring an option (in dispatch) for making a seq become positional?
-
-## D20181130T150307:here positional="" doesn't work as workaround for https://github.com/c-blake/cligen/issues/61
+## D20181130T150307:here RESOLVED positional="" doesn't work as workaround for https://github.com/c-blake/cligen/issues/61
 rnim -d:case9 -d:nopositional $nim_D/vitanim/testcases/tests/t0000.nim -h
 nim c -r -d:case9 -d:nopositional /Users/timothee/git_clone//nim//vitanim/testcases/tests/t0000.nim -h
 Usage:
@@ -97,9 +97,6 @@ Usage:
   --foo7=       DPSV[int]     <D>10           set foo7
   --foo8=       string        ""              set foo8
 
-## TODO: how to override non-empty with empty (or even override empty with empty)?
-
-
 ## 
 rnim -d:case5 $nim_D/vitanim/testcases/tests/t0000.nim -h
 nim c -r -d:case5 /Users/timothee/git_clone//nim//vitanim/testcases/tests/t0000.nim -h
@@ -136,6 +133,10 @@ when defined(case4):
     echo a
 
 when defined(case5):
+  proc main(a1: seq[string], a2: seq[string])=
+    echo (a1, a2)
+
+when defined(case5b):
   proc main(a1: seq[string], a2: seq[string])=
     echo (a1, a2)
 
@@ -185,16 +186,23 @@ when defined(case14):
   proc main(foo1 = @["abc", "def"])=
     echo (foo1,)
 
+# PENDING https://github.com/c-blake/cligen/issues/66
+# when defined(nopositional):
+#   let positional = ""
+# else:
+#   # let positional = "<AUTO>"
+#   let positional = "a3"
+
 when defined(DPSV):
   let d = "<D>"
-  dispatch(main, delimit=d)
-when defined(delimiter_SPACE):
+  dispatch(main, delimit=d, positional=positional)
+elif defined(delimiter_SPACE):
   let d = " "
-  dispatch(main, delimit=d)
+  dispatch(main, delimit=d, positional=positional)
+elif defined(nopositional):
+  dispatch(main, delimit=d, positional="")
 elif defined(badHelpKey):
   # RESOLVED now gives CT error
-  dispatch(main, help={ "badkey" : "asdf" })
-elif defined(nopositional):
-  dispatch(main, positional="")
+  dispatch(main, help={ "badkey" : "asdf" }, positional=positional)
 else:
   dispatch(main)
