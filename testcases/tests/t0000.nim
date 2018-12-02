@@ -54,13 +54,18 @@ Usage:
   def     set foo2
   --foo3=       string       "abc\ndef"  set foo3
 
+## D20181202T120530:here
+impossible to set a seq to empty
+rnim -d:case14 $vitanim_D/testcases/tests/t0000.nim --foo1=
+nim c -r -d:case14 /Users/timothee/git_clone//nim//vitanim//testcases/tests/t0000.nim --foo1=
+(Field0: @[""])
+
 ## D20181130T174608:here
 the default value formatting for seq is not good:
 * newlines are not escaped (see D20181130T172327)
   * @[""] prints as nothing_at_all (for DPSV, <D>)
   * @[] prints as EMPTY (for DPSV, EMPTY, which is not super consistent)
 * it's neither DRY (DPSV or ,SV is repeated in every seq entry) nor standard notation
-
 
 rnim -d:case11 $nim_D/vitanim/testcases/tests/t0000.nim -h
 nim c -r -d:case11 /Users/timothee/git_clone//nim//vitanim/testcases/tests/t0000.nim -h
@@ -92,7 +97,7 @@ Usage:
   --foo7=       DPSV[int]     <D>10           set foo7
   --foo8=       string        ""              set foo8
 
-
+## TODO: how to override non-empty with empty (or even override empty with empty)?
 
 
 ## 
@@ -120,6 +125,10 @@ when defined(case2a):
 
 when defined(case2b):
   proc main(foo: seq[string])=
+    echo foo
+
+when defined(case2c):
+  proc main(foo: seq[float])=
     echo foo
 
 when defined(case4):
@@ -152,7 +161,7 @@ when defined(case10):
     echo (foo)
 
 when defined(case11):
-  proc main(foo1: int, foo2: float, foo3: seq[string] = @["baz1", "baz2"], foo4: seq[string] = @[], foo5: seq[string] = @[""], foo6: seq[int] = @[], foo7: seq[int] = @[10], foo8="")=
+  proc main(foo1: int, foo2: float, foo3: seq[string] = @["baz1", "baz2"], foo4: seq[string] = @[], foo5: seq[string] = @[""], foo5b: seq[string] = @["", ""], foo6: seq[int] = @[], foo7: seq[int] = @[10], foo8="")=
     discard
 
 when defined(case12):
@@ -172,8 +181,15 @@ when defined(case12):
 when defined(case13):
   proc main(foo1: int, foo2 = @["abc\ndef"], foo3 = "abc\ndef") = discard
 
+when defined(case14):
+  proc main(foo1 = @["abc", "def"])=
+    echo (foo1,)
+
 when defined(DPSV):
   let d = "<D>"
+  dispatch(main, delimit=d)
+when defined(delimiter_SPACE):
+  let d = " "
   dispatch(main, delimit=d)
 elif defined(badHelpKey):
   # RESOLVED now gives CT error
