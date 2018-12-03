@@ -1,4 +1,7 @@
 */tests/**
 !*/tests/**/*.*
 
+*/tests_imported/**
+!*/tests_imported/**/*.*
+
 htmldocs
