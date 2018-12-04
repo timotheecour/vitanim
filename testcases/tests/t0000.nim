@@ -104,6 +104,9 @@ Warning: cligen only supports one seq param for positional args; using `a1`, not
 
 
 ## TODO: escaping arbitrary cmd (cf DPSV)
+
+## test for grep: -foobart
+
 ]#
 
 import cligen
@@ -160,6 +163,10 @@ when defined(case9):
 when defined(case10):
   proc main(foo: seq[string] = @["baz"])=
     echo (foo)
+
+when defined(case10b):
+  proc main(foo: seq[string] = @["baz"], goo: seq[string] = @["gaz"], a=false, b=false, c=false)=
+    echo (foo, goo, a, b, c)
 
 when defined(case11):
   proc main(foo1: int, foo2: float, foo3: seq[string] = @["baz1", "baz2"], foo4: seq[string] = @[], foo5: seq[string] = @[""], foo5b: seq[string] = @["", ""], foo6: seq[int] = @[], foo7: seq[int] = @[10], foo8="")=
