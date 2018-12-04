@@ -97,6 +97,18 @@ Usage:
   --foo7=       DPSV[int]     <D>10           set foo7
   --foo8=       string        ""              set foo8
 
+## D20181203T173521:here `./main -f` fails even though `./main -f:` or `./main -f=` or `./main --foo` works
+rnim -d:case10 $nim_D/vitanim/testcases/tests/t0000.nim -f
+nim c -r -d:case10 /Users/timothee/git_clone//nim//vitanim/testcases/tests/t0000.nim -f
+
+argument expected for option `f` at end of params
+argument expected for option `` at end of params
+Unknown short option: ""
+
+Run with --help for full usage.
+Error: execution of an external program failed: '/tmp/nim//app -f'
+
+
 ## 
 rnim -d:case5 $nim_D/vitanim/testcases/tests/t0000.nim -h
 nim c -r -d:case5 /Users/timothee/git_clone//nim//vitanim/testcases/tests/t0000.nim -h
