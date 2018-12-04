@@ -60,6 +60,14 @@ rnim -d:case14 $vitanim_D/testcases/tests/t0000.nim --foo1=
 nim c -r -d:case14 /Users/timothee/git_clone//nim//vitanim//testcases/tests/t0000.nim --foo1=
 (Field0: @[""])
 
+## D20181204T102517:here
+rnim -d:case15 $nim_D/vitanim/testcases/tests/t0000.nim -h
+nim c -r -d:case15 $vitanim_D/testcases/tests/t0000.nim -h
+Error: duplicate case label
+    proc main(h = "bar")=
+              ^
+
+
 ## D20181130T174608:here
 the default value formatting for seq is not good:
 * newlines are not escaped (see D20181130T172327)
@@ -181,8 +189,8 @@ when defined(case10b):
     echo (foo, goo, a, b, c)
 
 when defined(case11):
-  proc main(foo1: int, foo2: float, foo3: seq[string] = @["baz1", "baz2"], foo4: seq[string] = @[], foo5: seq[string] = @[""], foo5b: seq[string] = @["", ""], foo6: seq[int] = @[], foo7: seq[int] = @[10], foo8="")=
-    discard
+  proc main(foo1: int, foo2: float, foo3: seq[string] = @["baz1", "baz2"], foo4: seq[string] = @[], foo5: seq[string] = @[""], foo5b: seq[string] = @["", ""], foo6: seq[int] = @[], foo7: seq[int] = @[10], foo8="") =
+    echo foo3
 
 when defined(case12):
   let myDefault2 = block:
@@ -204,6 +212,11 @@ when defined(case13):
 when defined(case14):
   proc main(foo1 = @["abc", "def"])=
     echo (foo1,)
+
+when defined(case15):
+  # test h flag
+  proc main(h = "bar")=
+    echo (h,)
 
 # PENDING https://github.com/c-blake/cligen/issues/66
 # when defined(nopositional):
