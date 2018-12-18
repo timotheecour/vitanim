@@ -8,7 +8,7 @@ BUG:can't debug (with lldb) a nim binary that calls execCmdEx
 $timn_D/tests/D/t09.d
 
 ##
-rnim -d:case1 $nim_D/vitanim/testcases/tests/t0001.nim
+rnim -d:case1 $nim_D/vitanim/testcases/tests/t22_lldb_execCmdEx.nim
 # note: works fine with -d:case2 (ie, execCmd)
 
 lldb /tmp/nim//app
@@ -37,35 +37,17 @@ ok1b.1
 Error: unhandled exception: Unknown IO Error [IOError]
 Process 98697 exited with status = 1 (0x00000001)
 (lldb) ^D
+
+
 ]#
-
 import osproc
-import streams
-
-import timn/basics
 
 proc test=
   echo "ok1b.1"
-  let cmd = "echo foo"
   when defined(case1):
-    let temp = cmd.execCmdEx()
+    let temp = "echo foo".execCmdEx()
   elif defined(case2):
-    let temp = cmd.execCmd()
-  elif defined(case3):
-    # [[WIP] [do not merge] fix #9953 by timotheecour · Pull Request #9963 · nim-lang/Nim](https://github.com/nim-lang/Nim/pull/9963)
-    # var p = startProcess(command = cmd, options={poStdErrToStdOut,poEvalCommand,poParentStreams})
-    let temp = execCmdEx(command = cmd, options={poStdErrToStdOut,poEvalCommand,poParentStreams})
-  elif defined(case4):
-    var temp=""
-    var p = startProcess(command = cmd, options={poStdErrToStdOut, poEvalCommand, poParentStreams})
-    # var p = startProcess(command = cmd, options={poStdErrToStdOut, poEvalCommand})
-    defer: close(p)
-    let sub = outputStream(p)
-    var line: string
-    while true:
-      let more = readLine(sub, line)
-      temp.add line
-      if not more: break
+    let temp = "echo foo".execCmd()
   else:
     let temp = ""
   echo "ok1b.2"

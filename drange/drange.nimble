@@ -9,3 +9,6 @@ srcDir        = "src"
 
 # Dependencies
 requires "nim >= 0.19.1"
+
+task test, "bar":
+  echo "TODO"

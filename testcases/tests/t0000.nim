@@ -189,8 +189,16 @@ when defined(case10b):
     echo (foo, goo, a, b, c)
 
 when defined(case11):
-  proc main(foo1: int, foo2: float, foo3: seq[string] = @["baz1", "baz2"], foo4: seq[string] = @[], foo5: seq[string] = @[""], foo5b: seq[string] = @["", ""], foo6: seq[int] = @[], foo7: seq[int] = @[10], foo8="") =
+  proc main(foo1: int, foo2: float, foo3: seq[string] = @["baz1", "baz2"], foo4: seq[string] = @[], foo5: seq[string] = @[""], foo5b: seq[string] = @["", ""], foo6: seq[int] = @[], foo7: seq[int] = @[10], foo8="", foo9 = "abc+=@./def", foo10 = "abc def", zam = true, bam = "asdf") =
     echo foo3
+
+when defined(case11b):
+  proc main(foo1 = 10, coo = 0.0, foo3: seq[string] = @["baz1", "baz2"], foo4: seq[string] = @[], foo5: seq[string] = @[""], foo5b: seq[string] = @["", ""], foo6: seq[int] = @[], foo7: seq[int] = @[10], foo8="", foo9 = "abc+=@./def", foo10 = "abc def", zam = true, bam = "asdf") =
+    echo foo3
+
+when defined(case11c):
+  proc main(foo = @["baz1", "baz2", "baz1"]) =
+    echo foo
 
 when defined(case12):
   let myDefault2 = block:
