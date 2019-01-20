@@ -8,7 +8,6 @@ trigger:
 
 pool:
   vmImage: 'Ubuntu-16.04'
-  timeoutInMinutes: 30 # CHECKME
   # cancelTimeoutInMinutes: 5
 
 steps:
@@ -19,6 +18,7 @@ steps:
     echo Add other tasks to build, test, and deploy your project.
     echo See https://aka.ms/yaml
     echo "ok1"
-    sleep 10
+    sleep 100
     echo "ok2"
   displayName: 'Run a multi-line script'
+  timeoutInMinutes: 30 # CHECKME
