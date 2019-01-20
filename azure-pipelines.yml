@@ -42,11 +42,13 @@ jobs:
     - script: |
         set -e
 
-        # python3 ci_setup.py
-        filelog=/tmp/D20190120T011243.txt
-        filelog2=/tmp/D20190120T011243.2.txt
-        # python3 ci_setup.py > $filelog 2>&1
-        unbuffer python3 ci_setup.py > $filelog 2> $filelog2
+        python3 ci_setup.py
+
+        # # python3 ci_setup.py
+        # filelog=/tmp/D20190120T011243.txt
+        # filelog2=/tmp/D20190120T011243.2.txt
+        # # python3 ci_setup.py > $filelog 2>&1
+        # unbuffer python3 ci_setup.py > $filelog 2> $filelog2
 
         echo "v1"
         echo Add other tasks to build, test, and deploy your project.
