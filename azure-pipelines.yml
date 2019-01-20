@@ -29,6 +29,9 @@ jobs:
       # vmImage: 'Ubuntu-16.04'
       # BUG: `timeoutInMinutes` accepted under pool but has no effect
 
+    variables:
+      MY_VAR: my value
+
     steps:
     - checkout: self # self represents the repo where the initial Pipelines YAML file was found
       fetchDepth: 1
@@ -90,3 +93,26 @@ jobs:
       # enabled: false
       # timeoutInMinutes: 1
 
+
+    ## DEPLOY
+    # - steps:
+    #   - powershell: .\build.ps1
+    #   - task: CopyFiles@2
+    #     inputs:
+    #       contents: _buildOutput\**
+    #       targetFolder: $(Build.ArtifactStagingDirectory)
+    #   - task: PublishBuildArtifacts@1
+    #     inputs:
+    #       pathtoPublish: $(Build.ArtifactStagingDirectory)
+    #       artifactName: MyBuildOutputs
+    - steps:
+      - script: mkdir /tmp/foo && ls > /tmp/foo/D20190120T070155.txt
+      - task: CopyFiles@2
+        inputs:
+          contents: /tmp/foo/**
+          # contents: _buildOutput\**
+          targetFolder: $(Build.ArtifactStagingDirectory)
+      - task: PublishBuildArtifacts@1
+        inputs:
+          pathtoPublish: $(Build.ArtifactStagingDirectory)
+          artifactName: MyBuildOutputs
