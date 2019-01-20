@@ -57,7 +57,7 @@ jobs:
         # works! to resolve 
         # unbuffer python3 ci_setup.py
         
-        python3 -u ci_setup.py
+        python3 -u ci_setup.py # works!
 
         # # python3 ci_setup.py
         filelog=/tmp/D20190120T011243.txt
