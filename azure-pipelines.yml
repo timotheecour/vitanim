@@ -39,7 +39,6 @@ jobs:
       displayName: 'Run a one-line script'
 
     - script: |
-        enabled: false
         set -e
         echo "v1"
         echo Add other tasks to build, test, and deploy your project.
@@ -49,4 +48,5 @@ jobs:
         # sleep 240
         echo "ok2"
       displayName: 'Run a multi-line script'
+      enabled: false
       # timeoutInMinutes: 1 # ok, that works; check whether works w > 60?
