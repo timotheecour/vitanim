@@ -23,4 +23,4 @@ steps:
     asdf
     echo "ok2"
   displayName: 'Run a multi-line script'
-  timeoutInMinutes2: 1 # CHECKME
+  timeoutInMinutes: 1 # CHECKME
