@@ -14,8 +14,8 @@ jobs:
     # workspace:
     #   clean: outputs
 
-    cancelTimeoutInMinutes: 1
-    timeoutInMinutes: 1
+    # cancelTimeoutInMinutes: 1
+    # timeoutInMinutes: 1 # check whether works w > 60?
 
     strategy:
       matrix:
@@ -31,8 +31,7 @@ jobs:
 
     steps:
     - checkout: self # self represents the repo where the initial Pipelines YAML file was found
-      fetchDepth: 1  # the depth of commits to ask Git to fetch
-      # TODO: git clone --single-branch --branch tag
+      fetchDepth: 1
     # - template: azure-pipelines/linux/continuous-build-linux.yml
 
     - script: echo Hello, world!
@@ -44,9 +43,11 @@ jobs:
         echo Add other tasks to build, test, and deploy your project.
         echo See https://aka.ms/yaml
         echo "ok1"
-        git log | cat
+        echo "##vso[task.logissue type=error;sourcepath=consoleapp/main.cs;linenumber=1;columnnumber=1;code=100;]this is an error"
+        # git log | cat
         # sleep 240
         echo "ok2"
       displayName: 'Run a multi-line script'
-      enabled: false
-      # timeoutInMinutes: 1 # ok, that works; check whether works w > 60?
+      # enabled: false
+      # timeoutInMinutes: 1
+
