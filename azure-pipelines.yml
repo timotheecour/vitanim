@@ -38,10 +38,13 @@ jobs:
       displayName: 'Run a one-line script'
 
     - script: |
+        set -e
         # brew install unbuffer
         echo "ok"
-        apt-get update -qq
-        apt-get install -yqq coreutils expect
+        sudo apt-get update -qq
+        sudo apt-get install -yqq coreutils expect
+        which unbuffer
+        which stdbuf
 
     - script: |
         set -e
