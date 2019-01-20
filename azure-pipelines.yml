@@ -54,7 +54,9 @@ jobs:
         # stdbuf -i0 -o0 -e0 python3 ci_setup.py # didn't work
         # python3 ci_setup.py
 
-        unbuffer python3 ci_setup.py
+        # works! to resolve 
+        # unbuffer python3 ci_setup.py
+        stdbuf -i0 -o0 -e0 python3 ci_setup.py
 
         # # python3 ci_setup.py
         filelog=/tmp/D20190120T011243.txt
