@@ -9,7 +9,7 @@ trigger:
 jobs:
   - job: MyJob
     fetchDepth:1
-    displayName: My First Job
+    # displayName: My First Job
     # workspace:
     #   clean: outputs
 
