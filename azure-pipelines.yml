@@ -38,7 +38,7 @@ jobs:
       displayName: 'Run a one-line script'
 
     - script: |
-      brew install unbuffer
+        brew install unbuffer
     - script: |
         set -e
 
