@@ -50,6 +50,10 @@ jobs:
 
         #echo ##vso[task.uploadfile]c:\additionalfile.log
         echo "##vso[task.uploadfile]./README.md"
+        echo ls README.md
+        ls README.md
+        ls
+        echo "##vso[task.uploadfile]README.md"
 
         # git log | cat
         # sleep 240
