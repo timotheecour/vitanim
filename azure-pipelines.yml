@@ -106,10 +106,12 @@ jobs:
     #     inputs:
     #       pathtoPublish: $(Build.ArtifactStagingDirectory)
     #       artifactName: MyBuildOutputs
-    - script: mkdir /tmp/foo && ls > /tmp/foo/D20190120T070155.txt
+    - script: mkdir /tmp/foo && ls > /tmp/foo/D20190120T070155.txt && ls /tmp/foo/
     - task: CopyFiles@2
       inputs:
-        contents: /tmp/foo/**
+        # CHECKME: Description  : Copy files from source folder to target folder using match patterns (The match patterns will only match file paths, not folder paths
+        # contents: /tmp/foo/**
+        contents: /tmp/foo/D20190120T070155.txt
         # contents: _buildOutput\**
         targetFolder: $(Build.ArtifactStagingDirectory)
     - task: PublishBuildArtifacts@1
