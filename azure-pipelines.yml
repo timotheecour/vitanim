@@ -18,7 +18,7 @@ steps:
     echo Add other tasks to build, test, and deploy your project.
     echo See https://aka.ms/yaml
     echo "ok1"
-    sleep 100
+    sleep 10000
     echo "ok2"
   displayName: 'Run a multi-line script'
   timeoutInMinutes: 30 # CHECKME
