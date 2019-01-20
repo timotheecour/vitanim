@@ -42,18 +42,20 @@ jobs:
         echo "ok"
     - script: |
         set -e
+        echo "v1"
 
         # https://stackoverflow.com/questions/3465619/how-to-make-output-of-any-shell-command-unbuffered
-        stdbuf -i0 -o0 -e0 python3 ci_setup.py
+        # stdbuf -i0 -o0 -e0 python3 ci_setup.py # didn't work
         # python3 ci_setup.py
 
         # # python3 ci_setup.py
-        # filelog=/tmp/D20190120T011243.txt
-        # filelog2=/tmp/D20190120T011243.2.txt
+        filelog=/tmp/D20190120T011243.txt
+        filelog2=/tmp/D20190120T011243.2.txt
         # # python3 ci_setup.py > $filelog 2>&1
         # unbuffer python3 ci_setup.py > $filelog 2> $filelog2
+        
+        python3 ci_setup.py > $filelog 2> $filelog2
 
-        echo "v1"
         echo Add other tasks to build, test, and deploy your project.
         echo See https://aka.ms/yaml
         echo "ok1"
