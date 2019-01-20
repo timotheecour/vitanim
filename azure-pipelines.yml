@@ -1,0 +1,64 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+# https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema?view=vsts&tabs=example#trigger
+# trigger:
+# - master
+
+strategy:
+  matrix:
+    linux:
+      # note: travis was using trusty aka Ubuntu 14.04.5 LTS
+      # note 18.04 not available
+      imageName: 'ubuntu-16.04'
+    mac:
+      imageName: 'macos-10.13'
+    mac_cpp:
+      # 'macos-10.14' fails
+      imageName: 'macos-10.13'
+      NIM_COMPILE_TO_CPP: 'true'
+
+    # windows:
+    #   imageName: 'vs2017-win2016' # CHECKME
+
+pool:
+  vmImage: $(imageName)
+  timeoutInMinutes: 59 # CHECKME
+  # cancelTimeoutInMinutes: 5
+
+variables:
+  MY_VAR: my value
+  # Azure.ServiceConnectionId: '{{ serviceEndpointId }}'
+  # Agent.Source.Git.ShallowFetchDepth: 'true' # CHECKME
+
+steps:
+- script: |
+    set -e
+    python3 ci_setup.py
+    # echo See https://aka.ms/yaml
+    # separate step so we can download its log separately (can't download log before a script finishes apparently?)
+    # sh ci_run.sh
+    # echo_run echo $(imageName)
+
+- script: |
+    set -e
+    export PATH=$(pwd)/bin${PATH:+:$PATH}
+    echo PATH:${PATH}
+    echo "ls bin:"
+    ls -al bin
+
+    echo "pwd:"
+    pwd
+
+    echo "nim:"
+    which nim
+    echo "which -a nim:"
+    which -a nim
+
+    # nim c koch
+    # ./koch runCI
+    # TODO: before_deploy and deploy from travis
+
+  displayName: 'Nim runCI'
