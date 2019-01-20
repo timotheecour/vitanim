@@ -6,11 +6,13 @@
 trigger:
 - master
 
+fetchDepth:1
 
 pool:
   vmImage: 'Ubuntu-16.04'
-  cancelTimeoutInMinutes: 1
-  timeoutInMinutes: 1 # CHECKME
+  # BUG: these are accepted in this context but have no effect
+  # cancelTimeoutInMinutes: 1
+  # timeoutInMinutes: 1 # CHECKME
 
 steps:
 - script: echo Hello, world!
@@ -22,7 +24,7 @@ steps:
     echo Add other tasks to build, test, and deploy your project.
     echo See https://aka.ms/yaml
     echo "ok1"
-    sleep 240
+    git log | cat
     echo "ok2"
   displayName: 'Run a multi-line script'
-  # timeoutInMinutes: 1 # CHECKME
+  # timeoutInMinutes: 1 # ok, that works; check whether works w > 60?
