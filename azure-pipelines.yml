@@ -44,7 +44,7 @@ jobs:
         echo See https://aka.ms/yaml
         echo "ok1"
         echo "##vso[task.logissue type=error;sourcepath=consoleapp/main.cs;linenumber=1;columnnumber=1;code=100;]this is an error"
-        echo "vso[task.logissue type=warning;sourcepath=consoleapp/main.cs;linenumber=1;columnnumber=1;code=100;]this is an error2"
+        echo "##vso[task.logissue type=warning;sourcepath=consoleapp/main.cs;linenumber=1;columnnumber=1;code=100;]this is an error2"
         # git log | cat
         # sleep 240
         echo "ok2"
