@@ -16,7 +16,7 @@ def runCmd(cmd):
 def buildNimCsources():
   print("in buildNimCsources")
   runCmd("git clone --depth 1 https://github.com/nim-lang/csources.git")
-  runCmd("cd csources && sh build.sh")
+  # runCmd("cd csources && sh build.sh")
 
 buildNimCsources()
 print("after buildNimCsources")
