@@ -105,14 +105,13 @@ jobs:
     #     inputs:
     #       pathtoPublish: $(Build.ArtifactStagingDirectory)
     #       artifactName: MyBuildOutputs
-    - steps:
-      - script: mkdir /tmp/foo && ls > /tmp/foo/D20190120T070155.txt
-      - task: CopyFiles@2
-        inputs:
-          contents: /tmp/foo/**
-          # contents: _buildOutput\**
-          targetFolder: $(Build.ArtifactStagingDirectory)
-      - task: PublishBuildArtifacts@1
-        inputs:
-          pathtoPublish: $(Build.ArtifactStagingDirectory)
-          artifactName: MyBuildOutputs
+    - script: mkdir /tmp/foo && ls > /tmp/foo/D20190120T070155.txt
+    - task: CopyFiles@2
+      inputs:
+        contents: /tmp/foo/**
+        # contents: _buildOutput\**
+        targetFolder: $(Build.ArtifactStagingDirectory)
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathtoPublish: $(Build.ArtifactStagingDirectory)
+        artifactName: MyBuildOutputs
