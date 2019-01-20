@@ -39,22 +39,26 @@ jobs:
 
     - script: |
         set -e
+
+        # python3 ci_setup.py
+        filelog=/tmp/D20190120T011243.txt
+        python3 ci_setup.py > $filelog 2>&1
+
         echo "v1"
         echo Add other tasks to build, test, and deploy your project.
         echo See https://aka.ms/yaml
         echo "ok1"
-        echo "##vso[task.logissue type=error;sourcepath=consoleapp/main.cs;linenumber=1;columnnumber=1;code=100;]this is an error"
 
+        # echo "##vso[task.logissue type=error;sourcepath=consoleapp/main.cs;linenumber=1;columnnumber=1;code=100;]this is an error"
         # echo "##vso[task.logissue type=warning;sourcepath=consoleapp/main.cs;linenumber=1;columnnumber=1;code=100;]this is an error2"
         # echo "##vso[task.complete result=Succeeded;]DONE"
 
         #echo ##vso[task.uploadfile]c:\additionalfile.log
-        # echo "##vso[task.uploadfile]./README.md"
-        echo ls README.md
-        ls README.md
-        cp README.md /tmp/D20190120T011243.md
-        # echo "##vso[task.uploadfile]README.md"
-        echo "##vso[task.uploadfile]/tmp/D20190120T011243.md"
+
+        # works (needs full path)
+        # cp README.md /tmp/D20190120T011243.md
+        #echo "##vso[task.uploadfile]/tmp/D20190120T011243.md"
+        echo "##vso[task.uploadfile]$filelog"
 
         # git log | cat
         # sleep 240
