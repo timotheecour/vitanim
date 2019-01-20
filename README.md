@@ -1,3 +1,4 @@
+[//]: # (from https://github.com/MicrosoftDocs/vsts-docs/blob/master/docs/pipelines/get-started-yaml.md)
 [![Build Status](https://dev.azure.com/timotheecour/timotheecour/_apis/build/status/timotheecour.vitanim?branchName=master)](https://dev.azure.com/timotheecour/timotheecour/_build/latest?definitionId=2&branchName=master)
 
 # vitanim
