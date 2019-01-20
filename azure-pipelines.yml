@@ -10,7 +10,6 @@ trigger:
 
 jobs:
   - job: MyJob
-    # fetchDepth:1
     displayName: My First Job
     # workspace:
     #   clean: outputs
@@ -33,12 +32,14 @@ jobs:
     steps:
     - checkout: self # self represents the repo where the initial Pipelines YAML file was found
       fetchDepth: 1  # the depth of commits to ask Git to fetch
+      # TODO: git clone --single-branch --branch tag
     # - template: azure-pipelines/linux/continuous-build-linux.yml
 
     - script: echo Hello, world!
       displayName: 'Run a one-line script'
 
     - script: |
+        enabled: false
         set -e
         echo "v1"
         echo Add other tasks to build, test, and deploy your project.
