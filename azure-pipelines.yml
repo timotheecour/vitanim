@@ -52,7 +52,7 @@ jobs:
         echo ##vso[task.uploadfile]./README.md
 
         # git log | cat
-        sleep 240
+        # sleep 240
         echo "ok2"
       displayName: 'Run a multi-line script'
       # enabled: false
