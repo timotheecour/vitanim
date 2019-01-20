@@ -38,11 +38,15 @@ jobs:
       displayName: 'Run a one-line script'
 
     - script: |
+      brew install unbuffer
+    - script: |
         set -e
 
         # python3 ci_setup.py
         filelog=/tmp/D20190120T011243.txt
-        python3 ci_setup.py > $filelog 2>&1
+        filelog2=/tmp/D20190120T011243.2.txt
+        # python3 ci_setup.py > $filelog 2>&1
+        unbuffer python3 ci_setup.py > $filelog 2> $filelog2
 
         echo "v1"
         echo Add other tasks to build, test, and deploy your project.
@@ -59,6 +63,7 @@ jobs:
         # cp README.md /tmp/D20190120T011243.md
         #echo "##vso[task.uploadfile]/tmp/D20190120T011243.md"
         echo "##vso[task.uploadfile]$filelog"
+        echo "##vso[task.uploadfile]$filelog2"
 
         # git log | cat
         # sleep 240
