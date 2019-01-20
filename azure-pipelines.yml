@@ -41,10 +41,10 @@ jobs:
         set -e
         # brew install unbuffer
         echo "ok"
-        sudo apt-get update -qq
-        sudo apt-get install -yqq coreutils expect
-        which unbuffer
-        which stdbuf
+        # sudo apt-get update -qq
+        # sudo apt-get install -yqq coreutils expect
+        # which unbuffer
+        # which stdbuf
 
     - script: |
         set -e
@@ -56,7 +56,8 @@ jobs:
 
         # works! to resolve 
         # unbuffer python3 ci_setup.py
-        stdbuf -i0 -o0 -e0 python3 ci_setup.py
+        
+        python3 -u ci_setup.py
 
         # # python3 ci_setup.py
         filelog=/tmp/D20190120T011243.txt
