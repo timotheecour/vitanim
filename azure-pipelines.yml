@@ -6,25 +6,41 @@
 trigger:
 - master
 
-fetchDepth:1
+- job: MyJob
+  fetchDepth:1
+  displayName: My First Job
+  # workspace:
+  #   clean: outputs
 
-pool:
-  vmImage: 'Ubuntu-16.04'
-  # BUG: these are accepted in this context but have no effect
-  # cancelTimeoutInMinutes: 1
-  # timeoutInMinutes: 1 # CHECKME
+  cancelTimeoutInMinutes: 1
+  timeoutInMinutes: 1 # CHECKME
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+  strategy:
+    matrix:
+      linux:
+        imageName: 'ubuntu-16.04'
+      mac:
+        imageName: 'macos-10.13'
 
-- script: |
-    set -e
-    echo "v1"
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-    echo "ok1"
-    git log | cat
-    echo "ok2"
-  displayName: 'Run a multi-line script'
-  # timeoutInMinutes: 1 # ok, that works; check whether works w > 60?
+  pool:
+    vmImage: $(imageName)
+    # vmImage: 'Ubuntu-16.04'
+    # BUG: these are accepted in this context but have no effect
+    # cancelTimeoutInMinutes: 1
+    # timeoutInMinutes: 1 # CHECKME
+
+  steps:
+  - script: echo Hello, world!
+    displayName: 'Run a one-line script'
+
+  - script: |
+      set -e
+      echo "v1"
+      echo Add other tasks to build, test, and deploy your project.
+      echo See https://aka.ms/yaml
+      echo "ok1"
+      git log | cat
+      sleep 240
+      echo "ok2"
+    displayName: 'Run a multi-line script'
+    # timeoutInMinutes: 1 # ok, that works; check whether works w > 60?
