@@ -26,7 +26,11 @@ def run():
   # print(x)
 
 
-  plt.plot(x)
+  # plt.plot(x)
+
+  # x=x[0:200] # truncate for visibility
+
+  plt.plot(x, linestyle="",marker="o")
   plt.ylabel('[GC] occupied memory:')
   plt.show()
 

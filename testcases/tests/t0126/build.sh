@@ -5,7 +5,8 @@ build(){
     nim c  -o:$temp_D/libclib.dylib --app:lib --nimcache:$temp_D clib.nim
     clang++ -o $temp_D/test test.cpp -lclib -L$temp_D/
     $temp_D/test > $temp_D/log.txt
-    grep 'occupied memory' $temp_D/log.txt |less
+    # grep 'occupied memory' $temp_D/log.txt |less
+    python test.py
   )
 }
 
