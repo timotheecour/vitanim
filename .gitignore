@@ -1,7 +1,9 @@
-*/tests/**
-!*/tests/**/*.*
-
-*/tests_imported/**
-!*/tests_imported/**/*.*
+## ignore all files wo extension D20190125T022032
+*
+!/**/
+!*.*
 
 htmldocs
+
+*.dylib
+!Makefile
