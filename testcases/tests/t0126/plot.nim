@@ -11,6 +11,10 @@ proc main =
     y.add a.split[3].parseInt
   #echo y
 
+  let nMax = 100
+  if y.len > nMax:
+    y.setLen nMax
+
   let x = toSeq(0 .. y.high)
   scatterPlot(x, y)
     .ylabel("[GC] occupied memory:")
