@@ -11,9 +11,11 @@ proc main =
     y.add a.split[3].parseInt
   #echo y
 
-  let nMax = 1000 # CHECKME
-  if y.len > nMax:
-    y.setLen nMax
+  if false:
+    # truncate for visibility
+    let nMax = 1000
+    if y.len > nMax:
+      y.setLen nMax
 
   let x = toSeq(0 .. y.high)
   scatterPlot(x, y)
