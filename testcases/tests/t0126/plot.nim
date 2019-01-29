@@ -11,7 +11,7 @@ proc main =
     y.add a.split[3].parseInt
   #echo y
 
-  let nMax = 100
+  let nMax = 1000 # CHECKME
   if y.len > nMax:
     y.setLen nMax
 
