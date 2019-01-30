@@ -10,5 +10,8 @@ srcDir        = "src"
 # Dependencies
 requires "nim >= 0.19.1"
 
+# import distros
+# foreignDep "openssl"
+
 task test, "bar":
   echo "TODO"
