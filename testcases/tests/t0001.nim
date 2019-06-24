@@ -1,4 +1,5 @@
 #[
+RESOLVED => see D20190407T015205
 MOVED from $timn_D/bugs/stdlib/t22_lldb_execCmdEx.nim
 
 BUG:can't debug (with lldb) a nim binary that calls execCmdEx

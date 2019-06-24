@@ -1,8 +1,44 @@
 #[
+D20190407T015205:here
 MOVED from $timn_D/bugs/stdlib/t22_lldb_execCmdEx.nim
 
 BUG:can't debug (with lldb) a nim binary that calls execCmdEx
 [debugging (eg w lldb) a nim program crashes at the 1st call to `execCmdEx` · Issue #9634 · nim-lang/Nim](https://github.com/nim-lang/Nim/issues/9634)
+
+[Calls to fgets should be retried when error is EINTR · Issue #7632 · neovim/neovim](https://github.com/neovim/neovim/issues/7632)
+
+[Re: EINTR](https://lists.gnu.org/archive/html/bug-gnulib/2011-07/msg00020.html)
+
+[⚙ D47643 Rewrite JSON dispatcher loop using C IO (FILE*) instead of std::istream.](https://reviews.llvm.org/D47643)
+/// We use C-style FILE* for reading as std::istream has unclear interaction
+/// with signals, which are sent by debuggers on some OSs.
+
+
+When a debugger attached on MacOS, the
+// process received EINTR, the stream went bad, and clangd exited.
+// A retry-on-EINTR loop around reads solved this problem, but caused clangd to
+// sometimes hang rather than exit on other OSes. The interaction between
+// istreams and signals isn't well-specified, so it's hard to get this right.
+// The C APIs seem to be clearer in this respect.
+
+TODO: fix readLine => fgets?
+proc readLine*(s: Stream, line: var TaintedString): bool =
+
+
+[#568149 - zlib: please allow resuming after EINTR - Debian Bug report logs](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=568149)
+
+
+[linux - When to check for EINTR and repeat the function call? - Stack Overflow](https://stackoverflow.com/questions/4959524/when-to-check-for-eintr-and-repeat-the-function-call/4960077#4960077)
+
+
+[c - Are interrupt signals dispatched during fread() and fwrite() library calls? - Stack Overflow](https://stackoverflow.com/questions/53245721/are-interrupt-signals-dispatched-during-fread-and-fwrite-library-calls)
+
+Interrupts can occur during the fread() and fwrite() functions (and during the read() and write() system calls — there's no way to stop that. 
+
+On all systems, when a signal handler has the SA_RESTART flag cleared,
+   not only the read() system call will fail with EINTR, but also an fread()
+   call will fail and set the stream's error bit.
+
 
 ## links
 $timn_D/tests/D/t09.d
@@ -37,6 +73,25 @@ ok1b.1
 Error: unhandled exception: Unknown IO Error [IOError]
 Process 98697 exited with status = 1 (0x00000001)
 (lldb) ^D
+
+A:https://github.com/timotheecour/Nim/commit/422da6c0a3c73176a90f2e41fc5c221eb455cc9d
+
+proc readBuffer*(f: File, buffer: pointer, len: Natural): int {.
+  tags: [ReadIOEffect], benign.} =
+  ## reads `len` bytes into the buffer pointed to by `buffer`. Returns
+  ## the actual number of bytes that have been read which may be less than
+  ## `len` (if not as many bytes are remaining), but not greater.
+  while true:
+    result = c_fread(buffer, 1, len, f)
+    if result == len: return result
+    when not defined(NimScript):
+      if errno == EINTR:
+        errno = 0
+        c_clearerr(f)
+        continue
+    checkErr(f)
+    break
+
 
 
 ]#
