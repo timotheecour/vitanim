@@ -35,12 +35,12 @@ type Elem = uint64
 # type Elem = float32
 # type Elem = float32
 # type Elem = int32
+# type Elem = int32
 
 ## good
 # type Elem = uint16
 # type Elem = int16
 # type Elem = int8
-# type Elem = int32
 
 proc toElem[T](a: T): Elem =
   when compiles(Elem(a)): Elem(a)
@@ -48,12 +48,17 @@ proc toElem[T](a: T): Elem =
 
 when defined(case_with_murmur):
   proc hash*(x: string): Hash {.inline.} = toHashMurmur3(x.string)[0].Hash
+  when compiles(Elem.default.`$`):
+    proc hash*(x: Elem): Hash {.inline.} =
+      let x = $x
+      toHashMurmur3(x.string)[0].Hash
 
 # when defined(case_with_hash_string):
 #   proc hash*(x: Elem): Hash {.inline.} =
 #     hash($x)
 
 when defined(case_with_bytewiseHashing):
+  # note: requires making `bytewiseHashing` public in std/hashes
   proc hash*(x: string): Hash {.inline.} = bytewiseHashing(result, x, 0, high(x))
   proc hash*(x: Elem): Hash {.inline.} =
     let x = $x
