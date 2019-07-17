@@ -1,5 +1,5 @@
 #[
-KEY murmur
+KEY D20190624T193837 murmur
 
 ## without -d:danger
 nim c -r -d:case_with_murmur $vitanim_D/testcases/tests/t0129.nim
@@ -33,6 +33,11 @@ import pkg/sysrandom
 
 when defined(case_with_murmur):
   proc hash*(x: string): Hash {.inline.} = toHashMurmur3(x.string)[0].Hash
+
+when defined(case_with_hash_silly):
+  proc hash*(x: string): Hash {.inline.} =
+    result = toHashMurmur3("asdf")[0].Hash
+    # echo result
 
 when defined(case_with_bytewiseHashing):
   proc hash*(x: string): Hash {.inline.} = bytewiseHashing(result, x, 0, high(x))
