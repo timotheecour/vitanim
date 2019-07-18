@@ -29,11 +29,11 @@ import pkg/sysrandom
 
 ## adjust these as needed
 # type Elem = int64
-type Elem = uint64
+# type Elem = uint64
 # type Elem = float
 # type Elem = pointer
 # type Elem = float32
-# type Elem = float32
+type Elem = float32
 # type Elem = int32
 # type Elem = int32
 
@@ -43,15 +43,13 @@ type Elem = uint64
 # type Elem = int8
 
 proc toElem[T](a: T): Elem =
-  when compiles(Elem(a)): Elem(a)
-  else: cast[Elem](a) # eg, pointer
+  cast[Elem](a) # eg, pointer; avoids value out of range
+  # when compiles(Elem(a)): Elem(a)
+  # else: cast[Elem](a) # eg, pointer
 
 when defined(case_with_murmur):
-  proc hash*(x: string): Hash {.inline.} = toHashMurmur3(x.string)[0].Hash
-  when compiles(Elem.default.`$`):
-    proc hash*(x: Elem): Hash {.inline.} =
-      let x = $x
-      toHashMurmur3(x.string)[0].Hash
+  proc hash*(x: Elem): Hash {.inline.} =
+    toHashMurmur3(cast[pointer](unsafeAddr x), Elem.sizeof)[0].Hash
 
 # when defined(case_with_hash_string):
 #   proc hash*(x: Elem): Hash {.inline.} =
@@ -59,10 +57,17 @@ when defined(case_with_murmur):
 
 when defined(case_with_bytewiseHashing):
   # note: requires making `bytewiseHashing` public in std/hashes
-  proc hash*(x: string): Hash {.inline.} = bytewiseHashing(result, x, 0, high(x))
+  # proc hash*(x: string): Hash {.inline.} = bytewiseHashing(result, x, 0, high(x))
   proc hash*(x: Elem): Hash {.inline.} =
-    let x = $x
-    bytewiseHashing(result, x, 0, high(x))
+    # let x = $x
+    # bytewiseHashing(result, x, 0, high(x))
+    # let x2 = cast[pointer](unsafeAddr x) # => D20190717T180535
+    let x2 = cast[ptr char](unsafeAddr x)
+    let n2 = sizeof(Elem)-1
+    bytewiseHashing(result, x2, 0, n2)
+
+    # let x = cast[pointer](unsafeAddr x)
+    # bytewiseHashing(result, x, 0, sizeof(Elem))
 
 when defined(case_default):
   discard
@@ -80,12 +85,14 @@ when defined case1:
     hs3.init
 
   let n = 100_000 * 10
-  # let n = 100_000 * 100
-  # let n = 100_000 * 20
-  # let n = 100_000
   # let n = 100_000
 
   let m = n*10
+
+  # sanity check
+  for i in 0..(2*n):
+    let k1 = toElem(i)
+    doAssert k1 notin hs1
 
   # 1st case: insert 0..200k
   var time = cpuTime()
@@ -93,6 +100,11 @@ when defined case1:
       let k1 = toElem(i)
       hs1.incl(k1)
   echo "time ", (cpuTime() - time)
+
+  # sanity check
+  for i in 0..(2*n):
+    let k1 = toElem(i)
+    doAssert k1 in hs1
 
   # 2nd case: interleave insert 0..100k and 100k..200k
   time = cpuTime()
@@ -112,3 +124,7 @@ when defined case1:
       hs3.incl(k2)
   echo "time ", (cpuTime() - time)
 
+when defined case2:
+  let x1 = 0.0
+  let x2 = -0.0
+  echo (x1, x2, x1==x2, hash(x1), hash(x2))

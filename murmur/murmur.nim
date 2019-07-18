@@ -125,6 +125,9 @@ proc MurmurHash3_x64_128*(key: ptr uint8, len: int, seed: uint32 = 0): array[2, 
   result[0] = h1
   result[1] = h2
 
+proc toHashMurmur3*(x: pointer, len: int, seed = 0'u32): auto =
+  MurmurHash3_x64_128(cast[ptr uint8](x), len, seed)
+
 proc toHashMurmur3*(x: string, seed = 0'u32): auto =
   MurmurHash3_x64_128(cast[ptr uint8](x[0].unsafeAddr), x.len, seed)
   # MurmurHash3_x64_128(x.toOpenArray(0, high(x)), seed)
