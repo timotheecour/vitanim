@@ -32,7 +32,6 @@ import pkg/sysrandom
 # type Elem = uint64
 # type Elem = float
 # type Elem = pointer
-# type Elem = float32
 type Elem = float32
 # type Elem = int32
 # type Elem = int32
