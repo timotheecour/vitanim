@@ -82,7 +82,6 @@ proc fun() =
         echo k, " ", v
     echo (entropy: computeEntropy(t))
 
-  let niter=1
   run toHashMurmur3_2
   run hash
 

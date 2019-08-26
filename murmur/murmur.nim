@@ -42,7 +42,7 @@ proc fmix64(k: uint64): uint64 {.inline.} =
   k ^= k shr 33
   k
 
-proc MurmurHash3_x64_128*(key: ptr uint8, len: int, seed: uint32 = 0): array[2, uint64] =
+proc MurmurHash3_x64_128*(key: ptr uint8, len: int, seed: uint32 = 0, nBits: static int): auto =
   # let data: ptr uint8 = key[0].unsafeAddr
   # let data: ptr uint8 = cast[ptr uint8](key[0].unsafeAddr)
   let data: ptr uint8 = key
@@ -121,15 +121,20 @@ proc MurmurHash3_x64_128*(key: ptr uint8, len: int, seed: uint32 = 0): array[2, 
   h2 = fmix64(h2)
 
   h1 += h2
-  h2 += h1
-  result[0] = h1
-  result[1] = h2
+  when nBits == 128:
+    result = [h1, h1 + h2]
+  elif nBits == 64:
+    result = h1
+  else:
+    static: doAssert false, $nBits
 
-proc toHashMurmur3*(x: pointer, len: int, seed = 0'u32): auto =
-  MurmurHash3_x64_128(cast[ptr uint8](x), len, seed)
+const nBitsDefault = 64
 
-proc toHashMurmur3*(x: string, seed = 0'u32): auto =
-  MurmurHash3_x64_128(cast[ptr uint8](x[0].unsafeAddr), x.len, seed)
+proc toHashMurmur3*(x: pointer, len: int, seed = 0'u32, nBits: static int = nBitsDefault): auto =
+  MurmurHash3_x64_128(cast[ptr uint8](x), len, seed, nBits=nBits)
+
+proc toHashMurmur3*(x: string, seed = 0'u32, nBits: static int = nBitsDefault): auto =
+  MurmurHash3_x64_128(cast[ptr uint8](x[0].unsafeAddr), x.len, seed, nBits=nBits)
   # MurmurHash3_x64_128(x.toOpenArray(0, high(x)), seed)
   # MurmurHash3_x64_128(x[0].unsafeAddr, x.len, seed)
 
