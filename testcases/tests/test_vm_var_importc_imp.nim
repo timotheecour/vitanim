@@ -35,6 +35,9 @@ when defined(timn_D20191207T181719):
   }
 
   NIM_EXTERNC
+  void* get_pointer(){ return mystderr; }
+
+  NIM_EXTERNC
   A* get_mya(){
     return mya;
   }
@@ -65,6 +68,7 @@ else:
   proc getStderr*(): CFilePtr
   proc getStdout*(): CFilePtr
   proc init_mystderr*()
+  proc get_pointer*(): pointer
   var mystderr*: CFilePtr
   {.pop.}
 

@@ -1,4 +1,6 @@
 #[
+VM importc var D20191207T175525
+
 ADAPTED: D20191211T004219
 addresses: D20191207T175525 at CT prints address instead of value: 140735821540136
 [VM: allow importc var, cast[int](ptr type), correctly handle importc procs returning ptr types by timotheecour · Pull Request #12877 · nim-lang/Nim : VM: allow importc var, cast[int](ptr type), correctly handle importc procs returning ptr types by timotheecour · Pull Request #12877 · nim-lang/Nim](https://github.com/nim-lang/Nim/pull/12877)
@@ -22,49 +24,73 @@ template my_opt(foo, bar) =
 proc my_opt2(foo: var float32, bar: float32) =
   foo = foo + bar
 
+proc test_stderr()=
+  var status = c_fprintf(getStderr(), "hello world stderr getStderr()\n")
+  doAssert status > 0
+
+  block:
+    let a1 = cast[int](getStderr())
+    let temp = getStderr()
+    let a2 = cast[int](temp)
+    doAssert a1 == a2
+    doAssert a1 > 0
+    echo0b ("getStderr()", a1)
+
+  echo0b myc_float32
+  let u = myc_float32
+  echo0b (u, myc_float32, myc_float32, u + 1.2, myc_float32 + 12.3, $type(myc_float32))
+  myc_float32 = -1.0
+  doAssert myc_float32 == -1.0
+
+  let z = mystderr2
+  doAssert type(z) is CFilePtr
+  let z2 = cast[int](z)
+  echo0b z2
+  echo0b ("mystderr2", cast[int](mystderr2), )
+  status = c_fprintf(mystderr2, "hello world stderr mystderr2\n")
+  doAssert status > 0
+  status = c_fprintf(cstderr2, "hello world stderr cstderr2\n")
+  doAssert status > 0
+
 proc main()=
   echo0b "in main"
   init_mystderr()
+
+  test_stderr()
+
   let mya = get_mya()
-  when false:
-    # BUG: fails
+  block:
+    let a1 = get_pointer()
+    let a2 = get_pointer()
+    doAssert a1 == a2
     doAssert mya == mya2
-  doAssert cast[int](mya) == cast[int](mya2)
-  echo0b ("cast[int](mya)", cast[int](mya))
+    doAssert cast[int](a1) == cast[int](a2)
+    doAssert cast[int](mya) == cast[int](mya2)
+    echo0b cast[int](mya)
+    let a3 = cast[pointer](cast[int](a1))
+    doAssert a3 == a1
+    let a4 = cast[pointer](mya)
+    doAssert a4 != a1
 
-  when true:
-    #[
-    BUG:D20191210T175437:here super weird, looks like mya gets modified inside the c lib if
-      let mya = get_mya()
-    is called after this block:
-    ]#
-    var status = c_fprintf(getStderr(), "hello world stderr getStderr()\n")
-    doAssert status > 0
+  block:
+    let a4 = cast[pointer](mya)
+    type Foo = type(mya)
+    let a5 = cast[type(mya)](a4)
+    doAssert a5 == mya
+    doAssert a5 == cast[Foo](a4)
+    doAssert get_x2(a5) == 2.0
+    get_x2(a5) = 1.5
+    doAssert get_x2(a5) == 1.5
+    get_x2(a5) = 2.0
 
-    when false:
-      # BUG: need to do in 2 steps
-      # Error: opcCastPtrToInt: regs[rb].kind: rkInt
-      echo0b ("getStderr()", cast[int](getStderr()), )
-
-    block:
-      let temp = getStderr()
-      echo0b cast[int](temp)
-
-    echo0b myc_float32
-    let u = myc_float32
-    echo0b (u, myc_float32, myc_float32, u + 1.2, myc_float32 + 12.3, $type(myc_float32))
-    myc_float32 = -1.0
-    doAssert myc_float32 == -1.0
-
-    let z = mystderr2
-    doAssert type(z) is CFilePtr
-    let z2 = cast[int](z)
-    echo0b z2
-    echo0b ("mystderr2", cast[int](mystderr2), )
-    status = c_fprintf(mystderr2, "hello world stderr mystderr2\n")
-    doAssert status > 0
-    status = c_fprintf(cstderr2, "hello world stderr cstderr2\n")
-    doAssert status > 0
+  block:
+    let z1 = get_x2_impl(mya)
+    let temp1 = z1[]
+    let temp2 = get_x2_impl(mya)[]
+    let temp3 = get_x2(mya)
+    doAssert temp2 == temp3
+    doAssert temp1 == temp3
+    doAssert temp1 == 2.0
 
   # echo0b mya.x # Error: opcLdDeref unsupported ptr type: ("A", tyObject)
 
@@ -102,7 +128,6 @@ proc main()=
     doAssert myb_float32_var == 1.5
     myb_float32_var = 1.0
 
-  # BUG: some C++ float don't match nim's float32 exactly, eg for `float myb_float32 = 3.1415`
   doAssert myb_float32 == 1.0
   myb_float32 = 1.25
   doAssert myb_float32 == 1.25
