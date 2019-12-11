@@ -41,8 +41,11 @@ proc main()=
     var status = c_fprintf(getStderr(), "hello world stderr getStderr()\n")
     doAssert status > 0
 
-    # BUG: need to do in 2 steps, there's a bug
-    # echo0b ("getStderr()", cast[int](getStderr()), ) # Error: opcCastPtrToInt: regs[rb].kind: rkInt
+    when false:
+      # BUG: need to do in 2 steps
+      # Error: opcCastPtrToInt: regs[rb].kind: rkInt
+      echo0b ("getStderr()", cast[int](getStderr()), )
+
     block:
       let temp = getStderr()
       echo0b cast[int](temp)
@@ -58,7 +61,7 @@ proc main()=
     let z2 = cast[int](z)
     echo0b z2
     echo0b ("mystderr2", cast[int](mystderr2), )
-    status = c_fprintf(mystderr2, "hello world stderr mystderr2\n") # BUG: fails at CT (returns -1)
+    status = c_fprintf(mystderr2, "hello world stderr mystderr2\n")
     doAssert status > 0
     status = c_fprintf(cstderr2, "hello world stderr cstderr2\n")
     doAssert status > 0
@@ -73,22 +76,19 @@ proc main()=
 
   doAssert mya.get_x2 == 2.0
 
-  when false:
-    # BUG: doesn't work
-    get_x2(mya) = 1.0
-    doAssert mya.get_x2 == 1.0 # fails
+  get_x2(mya) = 1.0
+  doAssert mya.get_x2 == 1.0 # fails
 
   block:
     let temp1 = get_x2_impl(mya)
     temp1[] = 1.0
-    doAssert mya.get_x2 == 1.0
+    doAssert mya.get_x2 == 1.0, $mya.get_x2
     temp1[] += 1.0
     doAssert mya.get_x2 == 2.0
 
   block:
     doAssert myb_float32_var == 1.0
     myb_float32_var = 2.0
-    echo0b myb_float32_var
     doAssert myb_float32_var == 2.0
     myb_float32_var += 1.5
     doAssert myb_float32_var == 3.5

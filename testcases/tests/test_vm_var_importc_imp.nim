@@ -86,13 +86,17 @@ else:
   var myb_float32_var* {.importc: "myb_float32", dynlib: libF.}: float32
 
   proc get_myb_float32_impl*(): ptr float32 {.importc: "get_myb_float32_impl", dynlib: libF.}
-  template myb_float32*(): untyped = get_myb_float32_impl()[]
+  template myb_float32*(): untyped =
+    when false:
+      # BUG: this doesn't work:
+      let temp = get_myb_float32_impl()
+      temp[]
+    else:
+      get_myb_float32_impl()[]
 
   proc get_x2_impl*(a: A): ptr float32 {.importc: "get_x2", dynlib: libF.}
   template get_x2*(a: A): untyped =
-    # this doesn't work: get_x2_impl(a)[]
-    let temp = get_x2_impl(a)
-    temp[]
+    get_x2_impl(a)[]
 
   ## stderr
   # __stderrp: see https://github.com/vxgmichel/aioconsole/pull/16/files
