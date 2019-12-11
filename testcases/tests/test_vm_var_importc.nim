@@ -2,7 +2,10 @@
 ADAPTED: D20191211T004219
 addresses: D20191207T175525 at CT prints address instead of value: 140735821540136
 
+## setup
+build nim with -d:nimHasLibFFI
 nim cpp --passC:-std=c++11 -d:timn_D20191207T181719 --app:lib -o:/tmp/libD20191211T004436.dylib $vitanim_D/testcases/tests/test_vm_var_importc_imp.nim
+nim cpp -r --experimental:compiletimeFFI $vitanim_D/testcases/tests/test_vm_var_importc.nim
 ]#
 
 import timn/echo0b
