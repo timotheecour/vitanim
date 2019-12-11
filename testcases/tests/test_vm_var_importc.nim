@@ -1,6 +1,7 @@
 #[
 ADAPTED: D20191211T004219
 addresses: D20191207T175525 at CT prints address instead of value: 140735821540136
+[VM: allow importc var, cast[int](ptr type), correctly handle importc procs returning ptr types by timotheecour · Pull Request #12877 · nim-lang/Nim : VM: allow importc var, cast[int](ptr type), correctly handle importc procs returning ptr types by timotheecour · Pull Request #12877 · nim-lang/Nim](https://github.com/nim-lang/Nim/pull/12877)
 
 ## setup
 build nim with -d:nimHasLibFFI
