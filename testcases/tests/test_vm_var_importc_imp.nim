@@ -114,3 +114,5 @@ else:
   template get_errno_wrap*(): untyped = get_errno_ptr()[]
 
   var myerrno2* {.importc: "errno", header: "<errno.h>".}: cint
+
+  proc fun_NimNode_wrap*(): pointer {.importc: "get_errno", dynlib: libF.}

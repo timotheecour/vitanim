@@ -52,17 +52,71 @@ proc test_stderr()=
   status = c_fprintf(cstderr2, "hello world stderr cstderr2\n")
   doAssert status > 0
 
-proc main()=
+
+import std/macros
+proc funMacroAux(a: NimNode) =
+  echo0b (a.kind, a is ptr, a is ref, getType(a).kind)
+  let pa = cast[int](a)
+  echo0b pa
+  when false:
+    # Error: VM does not support 'cast' from tyInt to tyRef
+    let a2 = cast[NimNode](pa)
+    echo0b a2
+    doAssert a == a2
+
+macro funMacro(a: float) =
+  funMacroAux(a)
+
+proc test_NimNode()=
+  let x = 1.2
+  funMacro(x)
+
+var g0 {.compiletime.} = 1.5
+var g1 = 1.5
+
+proc test_global_aux[T, T2](pb: T, b: T2) =
+  let v = cast[int](pb)
+  let pb2 = cast[ptr int](v)
+  var pb3: type(pb2)
+  doAssert v == cast[int](pb2)
+  doAssert type(pb) is ptr float
+  doAssert type(pb2) is ptr int
+  doAssert pb2 == pb
+  doAssert pb3 == nil
+  doAssert pb2 != nil
+  doAssert pb[] == b
+  doAssert b == 1.5
+
+proc test_global() =
+  when nimvm:
+    test_global_aux(addr(g0), g0)
+  else:
+    test_global_aux(addr(g1), g1)
+
+proc main() =
   echo0b "in main"
   init_mystderr()
 
   test_stderr()
+
+  test_NimNode()
+  test_global()
 
   let mya = get_mya()
   block:
     let a1 = get_pointer()
     let a2 = get_pointer()
     doAssert a1 == a2
+    block:
+      proc foo[T](a: T) =
+        doAssert(a == a1)
+      foo(a2)
+        # type PointerAux = distinct pointer
+        # let a1b = PointerAux(a1)
+        # let a2b = PointerAux(a2)
+        # # when nimvm: # nim BUG: Error: illegal context for 'nimvm' magic
+        # doAssert a1b == a2b
+
     doAssert mya == mya2
     doAssert cast[int](a1) == cast[int](a2)
     doAssert cast[int](mya) == cast[int](mya2)
