@@ -11,6 +11,10 @@ var index = 0
 template runPerfAux(fun2) =
   index.inc
 
+  # let numIter = 1
+  # let timeout = 500.0
+  # let num = 100_000_000
+
   let numIter = 1
   let timeout = 50.0
   let num = 20_000_000
@@ -25,13 +29,15 @@ template runPerfAux(fun2) =
   block:
     proc myfun(i: int): auto =
       {.noSideEffect.}: fun2(i)
-    let data = Data[typeof(myfun)](index: index, fun: myfun, name: astToStr(fun2), num: num, numIter: numIter, enableGetNonexistant: true, enableGet: true, timeout: timeout)
-    # let data = Data[typeof(myfun)](index: index, fun: myfun, name: astToStr(fun2), num: num, numIter: numIter, enableGetNonexistant: false, enableGet: false, timeout: timeout)
+    let data = Data[typeof(myfun)](index: index, fun: myfun, name: astToStr(fun2), num: num, numIter: numIter, enableGet: true, timeout: timeout)
     runPerf(data)
 
 proc runPerfAll =
   let ghash = getNimGitHash()
   echo fmt"runPerfAll benchmark for nim git hash: {ghash}"
+
+  # runPerfAux(toRand)
+  # if true: return
 
   ## string keys
   runPerfAux(toEnglishWords)

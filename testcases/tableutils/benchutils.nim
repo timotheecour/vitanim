@@ -7,21 +7,34 @@ type Data*[Fun] = ref object
   name*: string
   num*: int
   numIter*: int
-  runtime*: float
+
+  runtime*: float ## total time
+  runtimePut*: float ## just for get
+  runtimeGet*: float ## just for get
+  runtimeContainsGood*: float ## just for get
+  runtimeContainsBad*: float ## just for getNonexistant
+
   enableGet*: bool
-  enableGetNonexistant*: bool
   timeout*: float
   timeoutExceeded*: bool
   timeoutExceededIter*: int
   dupCheck*: bool
-  notinCount*: int
+  inCount*: int
   samples*: seq[string]
 
 proc toString(a: Data): string =
   var timeoutmsg = ""
   if a.timeoutExceeded:
     timeoutmsg = fmt:"timeoutAtIter: {a.timeoutExceededIter}"
-  result = fmt"[{a.index:2}] name: {a.name:20} num: {a.num} numIter: {a.numIter} runtime: {a.runtime:20} {timeoutmsg:20}"
+
+  var runtimemsg = ""
+  runtimemsg.add fmt" t: {a.runtime:10}"
+  runtimemsg.add fmt" tPut: {a.runtimePut:10}"
+  runtimemsg.add fmt" tGet: {a.runtimeGet:10}"
+  runtimemsg.add fmt" tin1: {a.runtimeContainsGood:10}"
+  runtimemsg.add fmt" tin2: {a.runtimeContainsBad:10}"
+
+  result = fmt"[{a.index:2}] name: {a.name:20} num: {a.num} numIter: {a.numIter} {runtimemsg} {timeoutmsg:20}"
   for i in 0..<a.samples.len:
     result.add fmt" ex[{i}]: {a.samples[i]:20}"
 
@@ -69,32 +82,36 @@ proc runPerf*[Data](data: Data) =
 
     for iter in 0..<data.numIter:
       var tab = initTable[T, T]()
-      for i in 0..<n:
-        handleTimeout(iter)
-        let key = keys[i]
-        tab[key] = key
 
-      if data.enableGet:
+      template testLoop(keysAux, fieldTime, fun) =
+        let eTime = epochTime2()
         for i in 0..<n:
           handleTimeout(iter)
-          let key = keys[i]
-          doAssert key in tab
-          doAssert tab[key] == key
+          let key = keysAux[i]
+          fun(key)
+        fieldTime = epochTime2() - eTime
 
-      if data.enableGetNonexistant: # get on non-existant keys is more expensive
-        for i in 0..<n:
-          handleTimeout(iter)
-          let key = keysOther[i]
-          let ok = key notin tab
-          if not ok:
-            data.notinCount.inc
-            if data.dupCheck:
-              doAssert key notin tab
+      block:
+        template funGet(key) = tab[key] = key
+        testLoop(keys, data.runtimePut, funGet)
+
+      if data.enableGet: # get on non-existant keys is more expensive
+        block:
+          template funGet(key) = doAssert tab[key] == key
+          testLoop(keys, data.runtimeGet, funGet)
+
+        block:
+          template funGet(key) =
+            let ok = key in tab
+            data.inCount.inc
+            # if data.dupCheck: doAssert ok
+
+          testLoop(keys, data.runtimeContainsGood, funGet)
+          testLoop(keysOther, data.runtimeContainsBad, funGet)
 
       # TODO: also test for deletions
 
-  doAssert data.notinCount >= 0 # prevent optimizing out
+  doAssert data.inCount >= 0 # prevent optimizing out
 
-  let eTime2 = epochTime2()
-  data.runtime = eTime2 - eTime1
+  data.runtime = epochTime2() - eTime1
   echo data.toString
