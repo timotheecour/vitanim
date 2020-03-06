@@ -2,6 +2,7 @@
 D20200219T132255
 ]#
 import std/[strformat]
+import std/[tables] # PRTEMP D20200220T013017:here
 import "."/distribs
 import "."/benchutils
 import "."/utils
@@ -11,17 +12,19 @@ var index = 0
 template runPerfAux(fun2) =
   index.inc
 
+  ## large test
   # let numIter = 1
   # let timeout = 500.0
   # let num = 100_000_000
 
+  ## test to publish
   let numIter = 1
   let timeout = 50.0
   let num = 20_000_000
 
+  # scratch
   # let numIter = 1
   # let timeout = 20.0
-  # # let num = 5_000_000
   # let num = 1_000_000
 
   # workaround for BUG Nim: this would cause: Error: type mismatch: got <proc (a: int): int{.gcsafe, locks: 0.}> but expected 'proc (
@@ -36,7 +39,11 @@ proc runPerfAll =
   let ghash = getNimGitHash()
   echo fmt"runPerfAll benchmark for nim git hash: {ghash}"
 
+  ## scratch
   # runPerfAux(toRand)
+  # runPerfAux(toHighOrderBits)
+  # runPerfAux(toEnglishWords)
+  # runPerfAux(toSquares)
   # if true: return
 
   ## string keys

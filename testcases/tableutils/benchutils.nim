@@ -111,6 +111,8 @@ proc runPerf*[Data](data: Data) =
 
       # TODO: also test for deletions
 
+      # echo "tab:" & $tab # BUG: doesn't work without D20200220T013017
+
   doAssert data.inCount >= 0 # prevent optimizing out
 
   data.runtime = epochTime2() - eTime1
