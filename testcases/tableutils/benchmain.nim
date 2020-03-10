@@ -12,20 +12,29 @@ var index = 0
 template runPerfAux(fun2) =
   index.inc
 
-  ## large test
-  # let numIter = 1
-  # let timeout = 500.0
-  # let num = 100_000_000
+  when false:
+    ## large test
+    let numIter = 1
+    let timeout = 500.0
+    let num = 100_000_000
 
-  ## test to publish
-  let numIter = 1
-  let timeout = 50.0
-  let num = 20_000_000
+  when false:
+    ## test to publish
+    let numIter = 1
+    let timeout = 50.0
+    let num = 20_000_000
 
-  # scratch
-  # let numIter = 1
-  # let timeout = 20.0
-  # let num = 1_000_000
+  when true:
+    ## test to publish2
+    let numIter = 1
+    let timeout = 50.0
+    let num = 5_000_000
+
+  when false:
+    ## scratch
+    let numIter = 1
+    let timeout = 20.0
+    let num = 1_000_000
 
   # workaround for BUG Nim: this would cause: Error: type mismatch: got <proc (a: int): int{.gcsafe, locks: 0.}> but expected 'proc (
   # let data = Data[typeof(fun)](index: index, fun: fun, name: astToStr(fun2), num: num, numIter: 4, enableGetNonexistant: true, enableGet: true, timeout: timeout)
@@ -39,12 +48,13 @@ proc runPerfAll =
   let ghash = getNimGitHash()
   echo fmt"runPerfAll benchmark for nim git hash: {ghash}"
 
-  ## scratch
-  # runPerfAux(toRand)
-  # runPerfAux(toHighOrderBits)
-  # runPerfAux(toEnglishWords)
-  # runPerfAux(toSquares)
-  # if true: return
+  when false:
+    ## scratch
+    runPerfAux(toRand)
+    runPerfAux(toHighOrderBits)
+    runPerfAux(toEnglishWords)
+    runPerfAux(toSquares)
+    if true: return
 
   ## string keys
   runPerfAux(toEnglishWords)
