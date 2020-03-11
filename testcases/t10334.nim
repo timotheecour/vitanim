@@ -34,7 +34,10 @@ else:
   proc fun(opt: string) =
     const nim = getCurrentCompilerExe()
     let input = currentSourcePath
-    let cmd = fmt"{nim} c -r --skipParentCfg --skipUserCfg --hints:off -d:danger -d:case_test {opt} {input}"
+    var opt2 = "--passc:-flto"
+    # var opt2 = ""
+    # var opt2 = "--passc:-flto --passc:-fno-lto"
+    let cmd = fmt"{nim} c -r -o:/tmp/D20200310T123701 --skipParentCfg --skipUserCfg --hints:off -d:danger {opt2} -d:case_test {opt} {input}"
     # echo cmd
     # echo opt
     write(stdout, opt, ": ")
