@@ -51,14 +51,15 @@ when defined case2:
   template test(fun)=
     block:
       proc main()=
-        let n = 10_000_000
+        # let n = 10_000_000
+        let n = 100_000_000
         type T = type(fun()-fun())
         var dt: T
         for i in 0..<n:
           let t = fun()
           # code to benchmark here (intentionally empty)
-          let t2 = fun()
-          dt += t2-t
+          # let t2 = fun()
+          # dt += t2-t
         echo "\n" & astToStr(fun) & ":"
         echo ("total secs", dt.toSeconds)
         echo ("ns/iter", (dt.toSeconds * 1e9 / n.float).formatEng)
@@ -67,6 +68,12 @@ when defined case2:
       main()
       echo ("tot: ", cpuTime() - tot)
 
-  test(cpuTime)
+  # test(cpuTime)
+  test(getMonoTime)
+  test(getTicks)
+
+  test(getMonoTime)
+  test(getTicks)
+
   test(getMonoTime)
   test(getTicks)
