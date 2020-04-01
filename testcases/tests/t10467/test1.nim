@@ -10,6 +10,8 @@ proc handleSelection1(a: cstring) =
 
 proc handleSelection2(a: Selection) =
   echo ("fun2", a)
+  let b = $a # BUG here
+  echo ("fun2b", b)
 
 proc fun1*() {.exportc.} =
   handleSelection1(document.getSelection())
