@@ -1,5 +1,5 @@
 #[
-KEY xyz
+D20200619T125810
 
 nim r -d:case3 -d:danger $vitanim_D/testcases/t10975.nim
 
@@ -54,6 +54,7 @@ proc lines2[Fun](file: string, fun: Fun) =
 proc readData()=
   let n = 10
   let t=cpuTime()
+  let te=epochTime()
   var m = 0
   for i in 0..<n:
     proc fun(s: string) =
@@ -74,7 +75,8 @@ proc readData()=
     else:
       static: doAssert false
   let t2 = cpuTime() - t
-  echo (file, m, t2)
+  let te2 = epochTime() - te
+  echo (file, m, t2, te2)
 
 proc main()=
   prepareData()
