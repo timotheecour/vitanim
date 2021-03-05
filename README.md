@@ -16,7 +16,3 @@ nimble install -y "http://github.com/genotrance/nimtreesitter?subdir=treesitter"
 task installWithDeps, "install dependencies":
   ...
 ```
-
-## TEMP
-foo1 `bar` `v` `\` `\v` `\\`
-foo2 ``bar`` ``v`` ``\`` ``\v`` ``\\``
