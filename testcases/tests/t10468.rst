@@ -12,3 +12,11 @@ $``strutils.delete``
 
 ``strutils.delete``
 
+other0
+------
+see :`strutils.delete`
+
+see :`strutils.delete`
+see :`strutils.delete`, `foo`, :`strutils.delete`, :`strutils.delete`
+
+see :`strutils.delete`,`foo`,:`strutils.delete`,:`strutils.delete`
