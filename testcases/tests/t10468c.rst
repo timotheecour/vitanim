@@ -31,3 +31,13 @@ see !`strutils.delete`
 
 see `strutils.delete`!
 
+other2
+------
+
+see also: `CNN`_.
+
+.. _CNN: http://cnn.com/
+
+see also: `strutils.delete`_.
+
+.. strutils.delete: http://cnn.com/
