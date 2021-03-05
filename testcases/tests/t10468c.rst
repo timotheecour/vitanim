@@ -1,14 +1,33 @@
 .. default-role:: code
 
-## PRTEMP
-
 PRTEMP2
 -------
 
-$`strutils.delete`
+with `$`:
 
-`strutils.delete`
+see $`strutils.delete`
 
-$``strutils.delete``
+see `strutils.delete`
 
-``strutils.delete``
+see $``strutils.delete``
+
+see ``strutils.delete``
+
+with `_`:
+
+see `strutils.delete`_
+
+see `strutils.delete`_
+
+see `strutils.html`_
+
+other
+-----
+see :`strutils.delete`
+
+see `strutils.delete`:
+
+see !`strutils.delete`
+
+see `strutils.delete`!
+
