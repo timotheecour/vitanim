@@ -60,9 +60,9 @@ see also: `CNN`_.
 
 see also: `strutils.delete`_.
 
-.. strutils.delete: http://cnn.com/
+.. _strutils.delete: http://cnn.com/
 
 see also: `strutils`_.
 
-.. strutils: http://cnn.com/
+.. _strutils: http://cnn.com/
 
