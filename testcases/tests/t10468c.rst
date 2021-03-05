@@ -66,3 +66,4 @@ see also: `strutils`_.
 
 .. _strutils: http://cnn.com/
 
+see also: `a`_, `b`_, `compiler`_.
