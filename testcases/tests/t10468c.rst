@@ -21,8 +21,8 @@ see `strutils.delete`_
 
 see `strutils.html`_
 
-other
------
+other1
+------
 see :`strutils.delete`
 
 see `strutils.delete`:
@@ -30,6 +30,16 @@ see `strutils.delete`:
 see !`strutils.delete`
 
 see `strutils.delete`!
+
+see $$`strutils.delete`
+
+see ``strutils.delete``_
+
+see @`strutils.delete`
+
+see %`strutils.delete`
+
+see &`strutils.delete`
 
 other2
 ------
