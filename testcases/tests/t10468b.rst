@@ -1,0 +1,79 @@
+``a1\``
+
+
+.. default-role:: code
+
+a0
+
+`\``
+
+`b \ c \` d`
+
+`b \ c \` d\`` x`
+
+a01
+
+see ``foo.`bar```
+
+see ```foo1```
+
+see `\`foo2\``
+
+see ``f` `oo3``
+
+see ``f``o\x\ o4``
+
+see `````
+see ``````
+see ```````
+
+see f``o\x\ o5
+
+see `fo\'o\v1`
+
+
+see `fo\`o\v2`
+
+see `fo\`o\v \ 2`
+
+see `fo\`o\v \\`o \ 2`
+
+see `fo\`o\v \\`o \ 3`_
+
+see :`fo\`o\v \\`o \ 4`
+
+see `fo\`o\v \\`o \ 4`:
+
+.. default-role:: literal
+
+a1
+
+:literal:`\`
+
+a2
+
+`\`
+
+:code:`abcd.gef1`
+
+`abcd.gef2`
+
+``abcd.gef3``
+
+zok1
+
+`ab"cd.gef`
+
+zok2
+
+``ab"cd.gef``
+
+``a\b"cd.gef``
+
+``\``
+
+``\\``
+
+``\x``
+
+zok3
