@@ -3,6 +3,11 @@
 
 .. default-role:: code
 
+z0
+
+`\`
+
+
 a0
 
 `\``
@@ -45,6 +50,10 @@ see :`fo\`o\v \\`o \ 4`
 see `fo\`o\v \\`o \ 4`:
 
 .. default-role:: literal
+
+z1
+
+`\`
 
 a1
 
