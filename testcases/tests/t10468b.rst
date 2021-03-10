@@ -3,7 +3,7 @@
 
 z100
 
-`\`, `foo`, `foo.bar`, `\w`, `\ `, `import bar`
+`\`, `\\`, `\\x`, `\x`, `foo`, `foo.bar`, `\w`, `\ `, `import bar`
 
 `\``, `foo`, `foo.bar`, `\w`, `\ `, `import bar`
 
@@ -20,7 +20,7 @@ z100
 
 z101
 
-`\`, `foo`, `foo.bar`, `\w`, `\ `, `import bar`
+`\`, `\\`, `\\x`, `\x`, `foo`, `foo.bar`, `\w`, `\ `, `import bar`
 
 `\``, `foo`, `foo.bar`, `\w`, `\ `, `import bar`
 
@@ -37,7 +37,7 @@ z101
 
 z102
 
-`\`, `foo`, `foo.bar`, `\w`, `\ `, `import bar`
+`\`, `\\`, `\\x`, `\x`, `foo`, `foo.bar`, `\w`, `\ `, `import bar`
 
 `\``, `foo`, `foo.bar`, `\w`, `\ `, `import bar`
 
