@@ -1,6 +1,19 @@
 ``a1\``
 
 
+z100
+
+`\``, `foo`, `foo.bar`, `\w`, `\ `, `import bar`
+
+``\``, `foo`, `foo.bar`, `\w`, `\ `, `import bar`
+
+`\`, `foo2`, `foo.bar`, `\w`, `\ `, `import bar`
+
+`\\`, `foo3`, `foo.bar`, `\w`, `\ `, `import bar`
+
+`\\\`, `foo4`, `foo.bar`, `\w`, `\ `, `import bar`
+
+
 .. default-role:: literal
 
 z101
@@ -18,6 +31,17 @@ z101
 
 .. default-role:: code
 
+z102
+
+`\``, `foo`, `foo.bar`, `\w`, `\ `, `import bar`
+
+``\``, `foo`, `foo.bar`, `\w`, `\ `, `import bar`
+
+`\`, `foo2`, `foo.bar`, `\w`, `\ `, `import bar`
+
+`\\`, `foo3`, `foo.bar`, `\w`, `\ `, `import bar`
+
+`\\\`, `foo4`, `foo.bar`, `\w`, `\ `, `import bar`
 
 z0
 
