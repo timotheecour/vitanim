@@ -11,6 +11,8 @@ z101
 
 `\\`, `foo3`, `foo.bar`, `\w`, `\ `, `import bar`
 
+`\\\`, `foo4`, `foo.bar`, `\w`, `\ `, `import bar`
+
 
 
 z0
