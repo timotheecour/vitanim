@@ -3,6 +3,12 @@
 
 .. default-role:: code
 
+z101
+
+`\``, `foo`, `foo.bar`, `\w`, `\ `, `import bar`
+
+
+
 z0
 
 `\`
@@ -13,6 +19,8 @@ a0
 `\``
 
 `b \ c \` d`
+
+`b \ c \`d`
 
 `b \ c \` d\`` x`
 
