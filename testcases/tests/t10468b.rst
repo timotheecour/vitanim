@@ -1,7 +1,7 @@
 ``a1\``
 
 
-.. default-role:: code
+.. default-role:: literal
 
 z101
 
@@ -16,6 +16,7 @@ z101
 `\\\`, `foo4`, `foo.bar`, `\w`, `\ `, `import bar`
 
 
+.. default-role:: code
 
 
 z0
