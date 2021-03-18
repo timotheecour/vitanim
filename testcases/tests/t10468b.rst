@@ -134,3 +134,17 @@ zok2
 ``\x``
 
 zok3
+
+new links
+=========
+
+foo1_
+
+foo.bar2_
+
+foo.bar3_, foo.bar4_
+
+`foo.bar5_`
+
+`foo.bar6_`, `foo.bar7_`
+
