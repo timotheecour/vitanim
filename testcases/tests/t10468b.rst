@@ -144,7 +144,8 @@ foo.bar2_
 
 foo.bar3_, foo.bar4_
 
-`foo.bar5_`
+`foo.bar5`_
 
-`foo.bar6_`, `foo.bar7_`
+`foo.bar6`_, `foo.bar7`_
+
 
