@@ -1,21 +1,12 @@
-triple:
+singles:
+`bash export FOO3=`pwd` `
 
-```bash export FOO1=`pwd` ```
+` export FOO4=`pwd` `
 
-``` export FOO2=`pwd` ```
+singles + braces:
+`bash{export FOO3=`pwd`}`
 
-quad:
-
-````bash export FOO3=`pwd` ````
-
-```` export FOO4=`pwd` ````
-
-braces:
-
-```bash{export FOO3=`pwd`}````
-
-```{export FOO4=`pwd`}````
-
+`{export FOO4=`pwd`}`
 
 doubles:
 ``bash export FOO3=`pwd` ``
@@ -27,13 +18,28 @@ doubles + braces:
 
 ``{export FOO4=`pwd`}``
 
-singles:
-`bash export FOO3=`pwd` `
 
-` export FOO4=`pwd` `
+triple:
 
-singles + braces:
-`bash{export FOO3=`pwd`}`
+```bash export FOO1=`pwd` ```
 
-`{export FOO4=`pwd`}`
+``` export FOO2=`pwd` ```
 
+triple+braces:
+
+```bash{export FOO3=`pwd`}```
+
+```{export FOO4=`pwd`}```
+
+
+quad:
+
+````bash export FOO3=`pwd` ````
+
+```` export FOO4=`pwd` ````
+
+quad+braces:
+
+````bash{export FOO3=`pwd`}````
+
+````{export FOO4=`pwd`}````
