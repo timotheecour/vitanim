@@ -1,0 +1,3 @@
+```bash export FOO1=`pwd` ```
+
+``` export FOO2=`pwd` ```
