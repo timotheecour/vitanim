@@ -1,0 +1,22 @@
+ok1
+
+`export FOO=\`pwd\``:bash:
+
+ok2
+
+.. role:: bash(code)
+   :language: bash
+
+ok3
+
+`export FOO=\`pwd\``:bash:
+
+ok4
+
+`export FOO=\`pwd\`;`:bash:
+
+ok5
+
+`export FOO=pwd`:bash:
+
+ok6
