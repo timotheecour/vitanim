@@ -1,8 +1,39 @@
+triple:
+
 ```bash export FOO1=`pwd` ```
 
 ``` export FOO2=`pwd` ```
 
+quad:
 
 ````bash export FOO3=`pwd` ````
 
 ```` export FOO4=`pwd` ````
+
+braces:
+
+```bash{export FOO3=`pwd`}````
+
+```{export FOO4=`pwd`}````
+
+
+doubles:
+``bash export FOO3=`pwd` ``
+
+`` export FOO4=`pwd` ``
+
+doubles + braces:
+``bash{export FOO3=`pwd`}``
+
+``{export FOO4=`pwd`}``
+
+singles:
+`bash export FOO3=`pwd` `
+
+` export FOO4=`pwd` `
+
+singles + braces:
+`bash{export FOO3=`pwd`}`
+
+`{export FOO4=`pwd`}`
+
