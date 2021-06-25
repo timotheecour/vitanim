@@ -266,15 +266,15 @@ when true:
       chk addIntAnlib
 
 template mainAux(algo; needResize: static bool = true) =
-  echo()
-  echo astToStr(algo)
-  mainAux2(algo, 1, needResize)
-  mainAux2(algo, 2, needResize)
-  mainAux2(algo, 3, needResize)
+  block: # D20210625T100404
+    echo astToStr(algo)
+    mainAux2(algo, 1, needResize)
+    mainAux2(algo, 2, needResize)
+    mainAux2(algo, 3, needResize)
 
 proc main =
-  for i in 0..<1:
-    echo()
+  for i in 0..<3: # adjust as needed
+    echo i
     mainAux(addInt0)
     mainAux(addInt1)
     mainAux(addInt3)
