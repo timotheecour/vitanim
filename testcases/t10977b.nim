@@ -1,32 +1,39 @@
 #[
+D20210623T014358
+
 benchmark for https://github.com/nim-lang/Nim/pull/18324
 nim r -d:danger $vitanim_D/testcases/t10977b.nim
 results on OSX 11.4, 2.3 GHz 8-Core Intel Core i9:
 
 addInt0
-(time: 3.960433, alg: "addInt0", mode2: 1, sanity: 6057706836)
-(time: 4.495959999999999, alg: "addInt0", mode2: 2, sanity: 6823134569)
-(time: 4.215945000000001, alg: "addInt0", mode2: 3, sanity: 5913000000)
+(time: 3.917106, alg: "addInt0", mode2: 1, sanity: 6057706836)
+(time: 4.389234999999999, alg: "addInt0", mode2: 2, sanity: 6823134569)
+(time: 4.067030000000001, alg: "addInt0", mode2: 3, sanity: 5913000000)
 
 addInt1
-(time: 2.472244999999999, alg: "addInt1", mode2: 1, sanity: 6057706836)
-(time: 3.4021859999999986, alg: "addInt1", mode2: 2, sanity: 6823134569)
-(time: 2.3408859999999976, alg: "addInt1", mode2: 3, sanity: 5913000000)
+(time: 2.4893790000000013, alg: "addInt1", mode2: 1, sanity: 6057706836)
+(time: 3.3688249999999993, alg: "addInt1", mode2: 2, sanity: 6823134569)
+(time: 2.395979999999998, alg: "addInt1", mode2: 3, sanity: 5913000000)
 
 addInt3
-(time: 1.8768990000000016, alg: "addInt3", mode2: 1, sanity: 6057706836)
-(time: 2.1484859999999983, alg: "addInt3", mode2: 2, sanity: 6823134569)
-(time: 1.9108490000000025, alg: "addInt3", mode2: 3, sanity: 5913000000)
+(time: 1.7892239999999973, alg: "addInt3", mode2: 1, sanity: 6057706836)
+(time: 2.0433079999999997, alg: "addInt3", mode2: 2, sanity: 6823134569)
+(time: 1.7770119999999991, alg: "addInt3", mode2: 3, sanity: 5913000000)
+
+addIntDigits10
+(time: 1.513846000000001, alg: "addIntDigits10", mode2: 1, sanity: 6057706836)
+(time: 1.5729450000000007, alg: "addIntDigits10", mode2: 2, sanity: 6823134569)
+(time: 1.3679059999999978, alg: "addIntDigits10", mode2: 3, sanity: 5913000000)
 
 addInt3OpenArray
-(time: 1.007784000000001, alg: "addInt3OpenArray", mode2: 1, sanity: 6057706836)
-(time: 1.329969000000002, alg: "addInt3OpenArray", mode2: 2, sanity: 6823134569)
-(time: 0.9360080000000011, alg: "addInt3OpenArray", mode2: 3, sanity: 5913000000)
+(time: 0.9512420000000006, alg: "addInt3OpenArray", mode2: 1, sanity: 6057706836)
+(time: 1.263928, alg: "addInt3OpenArray", mode2: 2, sanity: 6823134569)
+(time: 0.887941000000005, alg: "addInt3OpenArray", mode2: 3, sanity: 5913000000)
 
 addIntDigits10OpenArray
-(time: 0.7906410000000008, alg: "addIntDigits10OpenArray", mode2: 1, sanity: 6057706836)
-(time: 0.8743730000000021, alg: "addIntDigits10OpenArray", mode2: 2, sanity: 6823134569)
-(time: 0.5313129999999973, alg: "addIntDigits10OpenArray", mode2: 3, sanity: 5913000000)
+(time: 0.8212880000000027, alg: "addIntDigits10OpenArray", mode2: 1, sanity: 6057706836)
+(time: 0.8867639999999994, alg: "addIntDigits10OpenArray", mode2: 2, sanity: 6823134569)
+(time: 0.5291950000000014, alg: "addIntDigits10OpenArray", mode2: 3, sanity: 5913000000)
 ]#
 
 const
@@ -151,16 +158,34 @@ proc addInt3OpenArray*(ret: var openArray[char], origin: uint64): int {.inline.}
   result = tmp.len - next
   copyMem ret[0].addr, tmp[next].addr, result
 
-proc addIntDigits10OpenArray(ret: var openArray[char]; num: uint64): int {.inline.} =
-  result = digits10(num)
+const nimHasAnLib = defined(nimHasAnLib)
+when nimHasAnLib:
+  {.compile: "/Users/timothee/git_clone//temp/acf/src/an_itoa.c".}
+  proc an_ltoa(buf: ptr char, x: uint64): ptr char {.importc.}
+  proc addIntAnlib(ret: var openArray[char]; num: uint64): int {.inline.} =
+    let pr = an_ltoa(ret[0].addr, num)
+    result = cast[int](pr) - cast[int](ret[0].addr)
+
+template addIntImpl(ret; num: uint64, length: int) =
+  var i = length - 2
   var x = num
-  var i = result - 2
   while i >= 0:
     let xi = (x mod 100) shl 1
     x = x div 100
     copyMem ret[i].addr, digits100[xi].unsafeAddr, 2
     i = i - 2
   if i == - 1: ret[0] = chr(ord('0') + x)
+
+proc addIntDigits10OpenArray(ret: var openArray[char]; num: uint64): int {.inline.} =
+  result = digits10(num)
+  addIntImpl(ret, num, result)
+
+proc addIntDigits10(result: var string, num: uint64) {.inline.} =
+  let length = digits10(num)
+  let n = result.len
+  result.setLen n + length
+  let ret = cast[ptr UncheckedArray[char]](result[n].addr)
+  addIntImpl(ret, num, length)
 
 import std/times
 
@@ -223,14 +248,22 @@ when true:
   import std/sugar
   for a in [0'u64, 1, 9, 10, 11, 99, 100, 101, 1234567, 12345670]:
     let expected = $a
-    # echo ("".dup(addInt3(a)), expected)
-    doAssert "".dup(addInt3(a)) == expected
+    template chk2(algo) =
+      doAssert "".dup(algo(a)) == expected
+    chk2 addInt0
+    chk2 addInt1
+    chk2 addInt3
+    chk2 addIntDigits10
 
-    var s = newString(20)
-    # let n = addIntDigits10OpenArray(s, a)
-    let n = addInt3OpenArray(s, a)
-    s.setLen n
-    doAssert s == expected, $(s, expected)
+    template chk(algo) =
+      var s = newString(20)
+      let n = algo(s, a)
+      s.setLen n
+      doAssert s == expected, $(s, expected)
+    chk addIntDigits10OpenArray
+    chk addInt3OpenArray
+    when nimHasAnLib:
+      chk addIntAnlib
 
 template mainAux(algo; needResize: static bool = true) =
   echo()
@@ -245,6 +278,9 @@ proc main =
     mainAux(addInt0)
     mainAux(addInt1)
     mainAux(addInt3)
+    mainAux(addIntDigits10)
     mainAux(addInt3OpenArray, needResize = false)
     mainAux(addIntDigits10OpenArray, needResize = false)
+    when nimHasAnLib:
+      mainAux(addIntAnlib, needResize = false)
 main()
